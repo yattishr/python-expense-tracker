@@ -1,0 +1,14 @@
+"""Expense_Categorizer: Classifies each parsed receipt into a predefined set of spending categories for downstream analysis and budgeting."""
+
+from google.adk import Agent
+from . import prompt
+
+MODEL = "gemini-2.5-pro-preview-05-06"
+
+categorizer_agent = Agent(
+    model=MODEL,
+    name="categorizer_agent",
+    description="Sub agent for categorizing receipts.",
+    instruction=prompt.CATEGORIZER_PROMPT,
+    output_key="category"
+)
