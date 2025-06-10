@@ -91,13 +91,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-expense_tracker/.env # Modified to reflect subdirectory
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+**/.env
 
 # IDE-specific files
 .vscode/
