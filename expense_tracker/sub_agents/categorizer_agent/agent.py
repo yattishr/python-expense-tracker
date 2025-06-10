@@ -8,7 +8,7 @@ MODEL = "gemini-2.5-pro-preview-05-06"
 categorizer_agent = Agent(
     model=MODEL,
     name="categorizer_agent",
-    description="Sub agent for categorizing receipts.",
+    description="Tags each receipt line‐item with a spending category.",
     instruction=prompt.CATEGORIZER_PROMPT,
-    output_key="category"
+    output_key="items",
 )

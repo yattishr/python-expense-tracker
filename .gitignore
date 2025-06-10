@@ -92,6 +92,7 @@ celerybeat.pid
 
 # Environments
 **/.env
+.venv
 
 # IDE-specific files
 .vscode/
