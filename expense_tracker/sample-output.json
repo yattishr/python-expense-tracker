@@ -1,144 +1,110 @@
+INFO:     127.0.0.1:50414 - "POST /run_sse HTTP/1.1" 200 OK
+2025-06-10 15:52:30,388 - INFO - envs.py:47 - Loaded .env file for expense_tracker at C:\Projects\expense-tracker\expense_tracker\.env
+2025-06-10 15:52:30,390 - INFO - envs.py:47 - Loaded .env file for expense_tracker at C:\Projects\expense-tracker\expense_tracker\.env
+2025-06-10 15:52:30,418 - INFO - _api_client.py:419 - The project/location from the environment variables will take precedence over the API key from the environment variables.
+2025-06-10 15:52:30,745 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-06-10 15:52:30,746 - INFO - google_llm.py:91 - 
 LLM Request:
 -----------------------------------------------------------
 System Instruction:
 
-You are an AI-powered receipt scanning assistant.
-
-Your primary role is to accurately extract and structure relevant information from scanned receipts.
-
-Your tasks include:
-- Merchant Information: Store name, address, contact details
-- Transaction Details: Date, time, receipt number, payment method
-- Itemized Purchases: Product names, quantities, individual prices, discounts
-- Total Amounts: Subtotal, taxes, total paid, and any applied discounts
-
-Requirements:
-- If the user provides a file, extract all receipt information and process it fully.
-- If the user sends a text command, respond accordingly.
-- Ensure high accuracy by detecting OCR errors and correcting misread text when possible.
-- Normalize dates, currency values, and formatting for consistency.
-- If any key details are missing or unclear, return a structured response indicating incomplete data.
-- Handle multiple formats, languages, and varying receipt layouts efficiently.
-- Always produce a **structured JSON output** for easy integration with databases or expense tracking systems.
-- If any value cannot be confidently extracted, set it to null in the JSON output and include a comment field with a brief explanation.
+    Given only the file path to a receipt image or PDF, call the ocr_tool to extract  
+    merchant, items, totals, dates, etc., then return *only* the resulting JSON.      
 
 
-You are an agent. Your internal name is "expense_coordinator".
+You are an agent. Your internal name is "ocr_agent".
 
- The description about you is "Handles end-to-end expense receipt processing: upload, parse, categorize, and report. Delegates category and report work to sub-agents."
-
-
-You have a list of other agents to transfer to:
-
-
-Agent name: categorizer_agent
-Agent description:
-
-
-Agent name: reporter_agent
-Agent description:
-
-
-If you are the best to answer the question according to your description, you
-can answer it.
-
-If another agent is better for answering the question according to its
-description, call `transfer_to_agent` function to transfer the
-question to that agent. When transferring, do not generate any text other than
-the function call.
-
+ The description about you is "Performs OCR on a receipt image/PDF and returns structured JSON of receipt fields."
 -----------------------------------------------------------
 Contents:
 {"parts":[{"text":"go"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
 -----------------------------------------------------------
 Functions:
-transfer_to_agent: {'agent_name': {'type': <Type.STRING: 'STRING'>}} -> None
 ocr_tool: {'image_path': {'type': <Type.STRING: 'STRING'>}} -> None
 -----------------------------------------------------------
 
-2025-06-08 15:46:37,142 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
-2025-06-08 15:46:47,986 - INFO - _client.py:1740 - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/saferouteza/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
-2025-06-08 15:46:48,003 - INFO - google_llm.py:151 - 
+2025-06-10 15:52:30,748 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-10 15:52:42,300 - INFO - _client.py:1740 - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/saferouteza/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-06-10 15:52:42,329 - INFO - google_llm.py:151 - 
 LLM Response:
 -----------------------------------------------------------
 Text:
 ```json
 {
-  "merchant_name": "City Central Market",
-  "merchant_address": "Shop 10, Corner Oak & Pine St, Metroville, 67890",
-  "merchant_phone": "(555) 987-6543",
-  "transaction_date": "2025-06-08",
-  "transaction_time": null,
-  "receipt_number": "CCK987654321",
-  "payment_method": "EFT",
-  "items": [
-    {
-      "description": "Milk (2L) & Bread (1 loaf)",
-      "quantity": 1,
-      "unit_price": 55.00,
-      "line_total": 55.00
-    },
-    {
-      "description": "Concert Ticket - Section B, Row 5 (1 Adult)",
-      "quantity": 1,
-      "unit_price": 650.00,
-      "line_total": 650.00
-    },
-    {
-      "description": "Tyre Puncture Repair",
-      "quantity": 1,
-      "unit_price": 150.00,
-      "line_total": 150.00
-    },
-    {
-      "description": "Subscription Renewal - Streaming Service",
-      "quantity": 1,
-      "unit_price": 129.99,
-      "line_total": 129.99
-    },
-    {
-      "description": "Coffee & Muffin Combo",
-      "quantity": 1,
-      "unit_price": 68.50,
-      "line_total": 68.50
-    },
-    {
-      "description": "Novel - \"The Silent Echoes\"",
-      "quantity": 1,
-      "unit_price": 240.00,
-      "line_total": 240.00
-    },
-    {
-      "description": "Dry Cleaning Service (3 items)",
-      "quantity": 1,
-      "unit_price": 110.00,
-      "line_total": 110.00
-    },
-    {
-      "description": "Public Transport Fare (Daily Pass)",
-      "quantity": 1,
-      "unit_price": 45.00,
-      "line_total": 45.00
-    },
-    {
-      "description": "HDMI Cable (2m)",
-      "quantity": 1,
-      "unit_price": 89.00,
-      "line_total": 89.00
-    },
-    {
-      "description": "Haircut (Adult)",
-      "quantity": 1,
-      "unit_price": 200.00,
-      "line_total": 200.00
-    }
-  ],
-  "subtotal": 1737.49,
-  "tax": 260.62,
-  "total": 2023.11,
-  "currency": "R",
-  "service_charge": 25.00,
-  "change_due": 0.00
+"date": "2025-06-08",
+"merchant": "City Central Market",
+"address": "Shop 10, Corner Oak & Pine St, Metroville, 67890",
+"phone": "(555) 987-6543",
+"transaction": "CCK987654321",
+"items": [
+{
+"description": "Milk (2L) & Bread (1 loaf)",
+"unit_price": "55.00",
+"quantity": "1",
+"line_total": "55.00"
+},
+{
+"description": "Concert Ticket - Section B, Row 5 (1 Adult)",
+"unit_price": "650.00",
+"quantity": "1",
+"line_total": "650.00"
+},
+{
+"description": "Tyre Puncture Repair",
+"unit_price": "150.00",
+"quantity": "1",
+"line_total": "150.00"
+},
+{
+"description": "Subscription Renewal - Streaming Service",
+"unit_price": "129.99",
+"quantity": "1",
+"line_total": "129.99"
+},
+{
+"description": "Coffee & Muffin Combo",
+"unit_price": "68.50",
+"quantity": "1",
+"line_total": "68.50"
+},
+{
+"description": "Novel - \"The Silent Echoes\"",
+"unit_price": "240.00",
+"quantity": "1",
+"line_total": "240.00"
+},
+{
+"description": "Dry Cleaning Service (3 items)",
+"unit_price": "110.00",
+"quantity": "1",
+"line_total": "110.00"
+},
+{
+"description": "Public Transport Fare (Daily Pass)",
+"unit_price": "45.00",
+"quantity": "1",
+"line_total": "45.00"
+},
+{
+"description": "HDMI Cable (2m)",
+"unit_price": "89.00",
+"quantity": "1",
+"line_total": "89.00"
+},
+{
+"description": "Haircut (Adult)",
+"unit_price": "200.00",
+"quantity": "1",
+"line_total": "200.00"
+}
+],
+"subtotal": "1,737.49",
+"vat": "260.62",
+"service_charge": "25.00",
+"total": "2,023.11",
+"payment_method": "EFT",
+"amount_paid": "2,023.11",
+"change_due": "0.00"
 }
 ```
 -----------------------------------------------------------
@@ -146,12 +112,198 @@ Function calls:
 
 -----------------------------------------------------------
 Raw response:
-{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"merchant_name\": \"City Central Market\",\n  \"merchant_address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n  \"merchant_phone\": \"(555) 987-6543\",\n  \"transaction_date\": \"2025-06-08\",\n  \"transaction_time\": null,\n  \"receipt_number\": \"CCK987654321\",\n  \"payment_method\": \"EFT\",\n  \"items\": [\n    {\n      \"description\": \"Milk (2L) & Bread (1 loaf)\",\n      \"quantity\": 1,\n      \"unit_price\": 55.00,\n      \"line_total\": 55.00\n    },\n    {\n      \"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 650.00,\n      \"line_total\": 650.00\n    },\n    {\n      \"description\": \"Tyre Puncture Repair\",\n      \"quantity\": 1,\n      \"unit_price\": 150.00,\n      \"line_total\": 150.00\n    },\n    {\n      \"description\": \"Subscription Renewal - Streaming Service\",\n      \"quantity\": 1,\n      \"unit_price\": 129.99,\n      \"line_total\": 129.99\n    },\n    {\n      \"description\": \"Coffee & Muffin Combo\",\n      \"quantity\": 1,\n      \"unit_price\": 68.50,\n      \"line_total\": 68.50\n    },\n    {\n      \"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n      \"quantity\": 1,\n      \"unit_price\": 240.00,\n      \"line_total\": 240.00\n    },\n    {\n      \"description\": \"Dry Cleaning Service (3 items)\",\n      \"quantity\": 1,\n      \"unit_price\": 110.00,\n      \"line_total\": 110.00\n    },\n    {\n      \"description\": \"Public Transport Fare (Daily Pass)\",\n      \"quantity\": 1,\n      \"unit_price\": 45.00,\n      \"line_total\": 45.00\n    },\n    {\n      \"description\": \"HDMI Cable (2m)\",\n      \"quantity\": 1,\n      \"unit_price\": 89.00,\n      \"line_total\": 89.00\n    },\n    {\n      \"description\": \"Haircut (Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 200.00,\n      \"line_total\": 200.00\n    }\n  ],\n  \"subtotal\": 1737.49,\n  \"tax\": 260.62,\n  \"total\": 2023.11,\n  \"currency\": \"R\",\n  \"service_charge\": 25.00,\n  \"change_due\": 0.00\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.0032463689903160196}],"create_time":"2025-06-08T13:46:41.527546Z","response_id":"QZRFaLqZIMGCsbQP6pOJgQo","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":770,"candidates_tokens_details":[{"modality":"TEXT","token_count":770}],"prompt_token_count":975,"prompt_tokens_details":[{"modality":"DOCUMENT","token_count":516},{"modality":"TEXT","token_count":459}],"total_token_count":1745,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\n\"line_total\": \"45.00\"\n},\n{\n\"description\": \"HDMI Cable (2m)\",\n\"unit_price\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.007519288124444658}],"create_time":"2025-06-10T13:52:36.571618Z","response_id":"pDhIaOLxIs6_gLUPuZaZyAI","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":699,"candidates_tokens_details":[{"modality":"TEXT","token_count":699}],"prompt_token_count":645,"prompt_tokens_details":[{"modality":"TEXT","token_count":129},{"modality":"DOCUMENT","token_count":516}],"total_token_count":1344,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
 -----------------------------------------------------------
 
-2025-06-08 15:46:48,011 - INFO - fast_api.py:705 - Generated event in agent run streaming: {"content":{"parts":[{"text":"```json\n{\n  \"merchant_name\": \"City Central Market\",\n  \"merchant_address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n  \"merchant_phone\": \"(555) 987-6543\",\n  \"transaction_date\": \"2025-06-08\",\n  \"transaction_time\": null,\n  \"receipt_number\": \"CCK987654321\",\n  \"payment_method\": \"EFT\",\n  \"items\": [\n    {\n      \"description\": \"Milk (2L) & Bread (1 loaf)\",\n      \"quantity\": 1,\n      \"unit_price\": 55.00,\n      \"line_total\": 55.00\n    },\n    {\n      \"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 650.00,\n      \"line_total\": 650.00\n    },\n    {\n      \"description\": \"Tyre Puncture Repair\",\n      \"quantity\": 1,\n      \"unit_price\": 150.00,\n      \"line_total\": 150.00\n    },\n    {\n      \"description\": \"Subscription Renewal - Streaming Service\",\n      \"quantity\": 1,\n      \"unit_price\": 129.99,\n      \"line_total\": 129.99\n    },\n    {\n      \"description\": \"Coffee & Muffin Combo\",\n      \"quantity\": 1,\n      \"unit_price\": 68.50,\n      \"line_total\": 68.50\n    },\n    {\n      \"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n      \"quantity\": 1,\n      \"unit_price\": 240.00,\n      \"line_total\": 240.00\n    },\n    {\n      \"description\": \"Dry Cleaning Service (3 items)\",\n      \"quantity\": 1,\n      \"unit_price\": 110.00,\n      \"line_total\": 110.00\n    },\n    {\n      \"description\": \"Public Transport Fare (Daily Pass)\",\n      \"quantity\": 1,\n      \"unit_price\": 45.00,\n      \"line_total\": 45.00\n    },\n    {\n      \"description\": \"HDMI Cable (2m)\",\n      \"quantity\": 1,\n      \"unit_price\": 89.00,\n      \"line_total\": 89.00\n    },\n    {\n      \"description\": \"Haircut (Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 200.00,\n      \"line_total\": 200.00\n    }\n  ],\n  \"subtotal\": 1737.49,\n  \"tax\": 260.62,\n  \"total\": 2023.11,\n  \"currency\": \"R\",\n  \"service_charge\": 25.00,\n  \"change_due\": 0.00\n}\n```"}],"role":"model"},"usageMetadata":{"candidatesTokenCount":770,"candidatesTokensDetails":[{"modality":"TEXT","tokenCount":770}],"promptTokenCount":975,"promptTokensDetails":[{"modality":"DOCUMENT","tokenCount":516},{"modality":"TEXT","tokenCount":459}],"totalTokenCount":1745,"trafficType":"ON_DEMAND"},"invocationId":"e-941ac769-9ded-4981-a454-7a1e5a5cf7fc","author":"expense_coordinator","actions":{"stateDelta":{"expense_result":"```json\n{\n  \"merchant_name\": \"City Central Market\",\n  \"merchant_address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n  \"merchant_phone\": \"(555) 987-6543\",\n  \"transaction_date\": \"2025-06-08\",\n  \"transaction_time\": null,\n  \"receipt_number\": \"CCK987654321\",\n  \"payment_method\": \"EFT\",\n  \"items\": [\n    {\n      \"description\": \"Milk (2L) & Bread (1 loaf)\",\n      \"quantity\": 1,\n      \"unit_price\": 55.00,\n      \"line_total\": 55.00\n    },\n    {\n      \"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 650.00,\n      \"line_total\": 650.00\n    },\n    {\n      \"description\": \"Tyre Puncture Repair\",\n      \"quantity\": 1,\n      \"unit_price\": 150.00,\n      \"line_total\": 150.00\n    },\n    {\n      \"description\": \"Subscription Renewal - Streaming Service\",\n      \"quantity\": 1,\n      \"unit_price\": 129.99,\n      \"line_total\": 129.99\n    },\n    {\n      \"description\": \"Coffee & Muffin Combo\",\n      \"quantity\": 1,\n      \"unit_price\": 68.50,\n      \"line_total\": 68.50\n    },\n    {\n      \"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n      \"quantity\": 1,\n      \"unit_price\": 240.00,\n      \"line_total\": 240.00\n    },\n    {\n      \"description\": \"Dry Cleaning Service (3 items)\",\n      \"quantity\": 1,\n      \"unit_price\": 110.00,\n      \"line_total\": 110.00\n    },\n    {\n      \"description\": \"Public Transport Fare (Daily Pass)\",\n      \"quantity\": 1,\n      \"unit_price\": 45.00,\n      \"line_total\": 45.00\n    },\n    {\n      \"description\": \"HDMI Cable (2m)\",\n      \"quantity\": 1,\n      \"unit_price\": 89.00,\n      \"line_total\": 89.00\n    },\n    {\n      \"description\": \"Haircut (Adult)\",\n      \"quantity\": 1,\n      \"unit_price\": 200.00,\n      \"line_total\": 200.00\n    }\n  ],\n  \"subtotal\": 1737.49,\n  \"tax\": 260.62,\n  \"total\": 2023.11,\n  \"currency\": \"R\",\n  \"service_charge\": 25.00,\n  \"change_due\": 0.00\n}\n```"},"artifactDelta":{},"requestedAuthConfigs":{}},"id":"GAxXdWLt","timestamp":1749390396.90891}
-INFO:     127.0.0.1:60554 - "GET /apps/expense_tracker/users/user/sessions/ed312826-947b-4bec-9085-7be0956cab82 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60559 - "GET /debug/trace/session/ed312826-947b-4bec-9085-7be0956cab82 HTTP/1.1" 200 OK
+2025-06-10 15:52:42,335 - INFO - fast_api.py:705 - Generated event in agent run streaming: {"content":{"parts":[{"text":"```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\n\"line_total\": \"45.00\"\n},\n{\n\"description\": \"HDMI Cable (2m)\",\n\"unit_price\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"}],"role":"model"},"usageMetadata":{"candidatesTokenCount":699,"candidatesTokensDetails":[{"modality":"TEXT","tokenCount":699}],"promptTokenCount":645,"promptTokensDetails":[{"modality":"TEXT","tokenCount":129},{"modality":"DOCUMENT","tokenCount":516}],"totalTokenCount":1344,"trafficType":"ON_DEMAND"},"invocationId":"e-f52062c5-fcec-4744-b4d9-a552eb8683d0","author":"ocr_agent","actions":{"stateDelta":{"receipt_json":"```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\n\"line_total\": \"45.00\"\n},\n{\n\"description\": \"HDMI Cable (2m)\",\n\"unit_price\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"},"artifactDelta":{},"requestedAuthConfigs":{}},"id":"2TX8Flbx","timestamp":1749563550.418107}
+2025-06-10 15:52:42,352 - INFO - _api_client.py:419 - The project/location from the environment variables will take precedence over the API key from the environment variables.
+2025-06-10 15:52:42,376 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.5-pro-preview-05-06, backend: vertex, stream: False
+2025-06-10 15:52:42,377 - INFO - google_llm.py:91 -
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI expense categorization agent.
+
+Objective: Given structured receipt data, classify each expense into one of the following categories:
+- Meals & Entertainment
+- Travel & Transport
+- Accommodation
+- Groceries
+- Office Supplies
+- Utilities & Telecom
+- Health & Wellness
+- Other
+
+Instructions:
+- Carefully review all available details: merchant name, item descriptions, and totals.
+- Use product/item lines and merchant context to infer the best-fit category.
+- If uncertain, assign the category 'Other' and add a brief explanation in a 'comment' field.
+- Output must be valid JSON:
+  {
+    "category": <category>,
+    "confidence": <0.0–1.0>,
+    "comment": <reason or notes, if applicable>
+  }
+- Do not hallucinate categories; only use those listed above.
 
 
+You are an agent. Your internal name is "categorizer_agent".
 
+ The description about you is "Sub agent for categorizing receipts."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"go"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\nice\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-10 15:52:42,380 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+INFO:     127.0.0.1:50426 - "GET /apps/expense_tracker/users/user/sessions/28b1b99e-1414-4041-b3e7-7d2bebc46641 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50426 - "GET /debug/trace/session/28b1b99e-1414-4041-b3e7-7d2bebc46641 HTTP/1.1" 200 OK        
+build graph
+INFO:     127.0.0.1:50430 - "GET /apps/expense_tracker/users/user/sessions/28b1b99e-1414-4041-b3e7-7d2bebc46641/events/2TX8Flbx/graph HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50429 - "GET /debug/trace/2TX8Flbx HTTP/1.1" 200 OK
+2025-06-10 15:53:26,014 - INFO - _client.py:1740 - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/saferouteza/locations/us-central1/publishers/google/models/gemini-2.5-pro-preview-05-06:generateContent "HTTP/1.1 200 OK"
+2025-06-10 15:53:26,035 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "category": "Other",
+  "confidence": 0.9,
+  "comment": "This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction."
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"category\": \"Other\",\n  \"confidence\": 0.9,\n  \"comment\": \"This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction.\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-9.297001316236413}],"create_time":"2025-06-10T13:52:46.440639Z","response_id":"rjhIaL_yGsy3nvgPm5DhwQo","model_version":"gemini-2.5-pro-preview-05-06","usage_metadata":{"candidates_token_count":115,"candidates_tokens_details":[{"modality":"TEXT","token_count":115}],"prompt_token_count":1443,"prompt_tokens_details":[{"modality":"TEXT","token_count":927},{"modality":"DOCUMENT","token_count":516}],"thoughts_token_count":3518,"total_token_count":5076,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-10 15:53:26,036 - INFO - fast_api.py:705 - Generated event in agent run streaming: {"content":{"parts":[{"text":"```json\n{\n  \"category\": \"Other\",\n  \"confidence\": 0.9,\n  \"comment\": \"This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction.\"\n}\n```"}],"role":"model"},"usageMetadata":{"candidatesTokenCount":115,"candidatesTokensDetails":[{"modality":"TEXT","tokenCount":115}],"promptTokenCount":1443,"promptTokensDetails":[{"modality":"TEXT","tokenCount":927},{"modality":"DOCUMENT","tokenCount":516}],"thoughtsTokenCount":3518,"totalTokenCount":5076,"trafficType":"ON_DEMAND"},"invocationId":"e-f52062c5-fcec-4744-b4d9-a552eb8683d0","author":"categorizer_agent","actions":{"stateDelta":{"category":"```json\n{\n  \"category\": \"Other\",\n  \"confidence\": 0.9,\n  \"comment\": \"This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction.\"\n}\n```"},"artifactDelta":{},"requestedAuthConfigs":{}},"id":"muNpEdBB","timestamp":1749563562.352116}  
+2025-06-10 15:53:26,036 - INFO - _api_client.py:419 - The project/location from the environment variables will take precedence over the API key from the environment variables.
+2025-06-10 15:53:26,057 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.5-pro-preview-05-06, backend: vertex, stream: False
+2025-06-10 15:53:26,057 - INFO - google_llm.py:91 -
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI reporting assistant for expense data.
+
+Objective: Generate concise, human-readable summaries and CSV data from categorized receipts within a defined time period (e.g., last week, month, or custom range).
+
+Instructions:
+- Summarize key metrics:
+    - Total spend
+    - Spend by category
+    - Top 3 vendors by spend
+    - Number of receipts processed
+- Identify any categories or vendors with unusual activity (spikes, high spend).
+- If provided, use custom date ranges; otherwise, report for the current month.
+- Output a structured summary in Markdown for easy display, and also return a machine-readable CSV string of the underlying data.
+- Example output JSON:
+  {
+    "summary_markdown": "<human-readable summary here>",
+    "csv_data": "<CSV string here>"
+  }
+- Do not fabricate or infer missing data—clearly indicate if data is incomplete.
+
+
+You are an agent. Your internal name is "reporter_agent".
+
+ The description about you is "Sub agent for generating reports."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"go"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\n\"line_total\": \"45.00\"\n},\n{\n\"description\": \"HDMI Cable (2m)\",\n\"unit_price\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[categorizer_agent] said: ```json\n{\n  \"category\": \"Other\",\n  \"confidence\": 0.9,\n  \"comment\": \"This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction.\"\n}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-10 15:53:26,060 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-10 15:53:53,334 - INFO - _client.py:1740 - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/saferouteza/locations/us-central1/publishers/google/models/gemini-2.5-pro-preview-05-06:generateContent "HTTP/1.1 200 OK"
+2025-06-10 15:53:53,347 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "summary_markdown": "# Expense Report: June 2025\n\n**Key Metrics:**\n*   **Total Spend:** R 2,023.11\n*   **Number of Receipts Processed:** 1\n\n**Spend by Category:**\n*   Other: R 2,023.11\n\n**Top Vendors by Spend:**\n1.  City Central Market: R 2,023.11\n\n**Unusual Activity:**\n*   Insufficient data to identify unusual activity or spikes. Only one receipt was processed for this period.",
+  "csv_data": "Date,Merchant,Category,Amount,Currency\n2025-06-08,\"City Central Market\",Other,2023.11,R"
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"summary_markdown\": \"# Expense Report: June 2025\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,023.11\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category:**\\n*   Other: R 2,023.11\\n\\n**Top Vendors by Spend:**\\n1.  City Central Market: R 2,023.11\\n\\n**Unusual Activity:**\\n*   Insufficient data to identify unusual activity or spikes. Only one receipt was processed for this period.\",\n  \"csv_data\": \"Date,Merchant,Category,Amount,Currency\\n2025-06-08,\\\"City Central Market\\\",Other,2023.11,R\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-3.3994093432868877}],"create_time":"2025-06-10T13:53:29.962283Z","response_id":"2ThIaOvdOpG-gLUPvc_EwQ8","model_version":"gemini-2.5-pro-preview-05-06","usage_metadata":{"candidates_token_count":194,"candidates_tokens_details":[{"modality":"TEXT","token_count":194}],"prompt_token_count":1580,"prompt_tokens_details":[{"modality":"DOCUMENT","token_count":516},{"modality":"TEXT","token_count":1064}],"thoughts_token_count":2091,"total_token_count":3865,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-10 15:53:53,350 - INFO - fast_api.py:705 - Generated event in agent run streaming: {"content":{"parts":[{"text":"```json\n{\n  \"summary_markdown\": \"# Expense Report: June 2025\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,023.11\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category:**\\n*   Other: R 2,023.11\\n\\n**Top Vendors by Spend:**\\n1.  City Central Market: R 2,023.11\\n\\n**Unusual Activity:**\\n*   Insufficient data to identify unusual activity or spikes. Only one receipt was processed for this period.\",\n  \"csv_data\": \"Date,Merchant,Category,Amount,Currency\\n2025-06-08,\\\"City Central Market\\\",Other,2023.11,R\"\n}\n```"}],"role":"model"},"usageMetadata":{"candidatesTokenCount":194,"candidatesTokensDetails":[{"modality":"TEXT","tokenCount":194}],"promptTokenCount":1580,"promptTokensDetails":[{"modality":"DOCUMENT","tokenCount":516},{"modality":"TEXT","tokenCount":1064}],"thoughtsTokenCount":2091,"totalTokenCount":3865,"trafficType":"ON_DEMAND"},"invocationId":"e-f52062c5-fcec-4744-b4d9-a552eb8683d0","author":"reporter_agent","actions":{"stateDelta":{"report":"```json\n{\n  \"summary_markdown\": \"# Expense Report: June 2025\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,023.11\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category:**\\n*   Other: R 2,023.11\\n\\n**Top Vendors by Spend:**\\n1.  City Central Market: R 2,023.11\\n\\n**Unusual Activity:**\\n*   Insufficient data to identify unusual activity or spikes. Only one receipt was processed for this period.\",\n  \"csv_data\": \"Date,Merchant,Category,Amount,Currency\\n2025-06-08,\\\"City Central Market\\\",Other,2023.11,R\"\n}\n```"},"artifactDelta":{},"requestedAuthConfigs":{}},"id":"32HulL78","timestamp":1749563606.036983}
+2025-06-10 15:53:53,352 - INFO - _api_client.py:419 - The project/location from the environment variables will take precedence over the API key from the environment variables.
+2025-06-10 15:53:53,365 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.0-flash, backend: vertex, stream: False
+2025-06-10 15:53:53,366 - INFO - google_llm.py:91 -
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI summarization agent for expense tracking.
+
+Objective: Given a list of receipts (with merchant, items, totals, categories, etc.), produce a concise human-readable summary that covers:
+- Total spend across all receipts
+- Spend breakdown by category (top 3 categories)
+- Number of receipts processed
+- Any notable observations (e.g., unusually high single purchase)
+
+Output: Valid JSON with a single key `summary` whose value is the textual summary.
+Example:
+{
+  "summary": "Over the past week you processed 9 receipts totaling R2,704.83. Your top categories were Utilities (R1,200), Food (R450), and Entertainment (R280). No single expense exceeded your threshold of R1,000."
+}
+
+
+You are an agent. Your internal name is "summarizer_agent".
+
+ The description about you is "Summarizes expense/receipt data into a brief human-readable summary."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"go"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\n\"date\": \"2025-06-08\",\n\"merchant\": \"City Central Market\",\n\"address\": \"Shop 10, Corner Oak & Pine St, Metroville, 67890\",\n\"phone\": \"(555) 987-6543\",\n\"transaction\": \"CCK987654321\",\n\"items\": [\n{\n\"description\": \"Milk (2L) & Bread (1 loaf)\",\n\"unit_price\": \"55.00\",\n\"quantity\": \"1\",\n\"line_total\": \"55.00\"\n},\n{\n\"description\": \"Concert Ticket - Section B, Row 5 (1 Adult)\",\n\"unit_price\": \"650.00\",\n\"quantity\": \"1\",\n\"line_total\": \"650.00\"\n},\n{\n\"description\": \"Tyre Puncture Repair\",\n\"unit_price\": \"150.00\",\n\"quantity\": \"1\",\n\"line_total\": \"150.00\"\n},\n{\n\"description\": \"Subscription Renewal - Streaming Service\",\n\"unit_price\": \"129.99\",\n\"quantity\": \"1\",\n\"line_total\": \"129.99\"\n},\n{\n\"description\": \"Coffee & Muffin Combo\",\n\"unit_price\": \"68.50\",\n\"quantity\": \"1\",\n\"line_total\": \"68.50\"\n},\n{\n\"description\": \"Novel - \\\"The Silent Echoes\\\"\",\n\"unit_price\": \"240.00\",\n\"quantity\": \"1\",\n\"line_total\": \"240.00\"\n},\n{\n\"description\": \"Dry Cleaning Service (3 items)\",\n\"unit_price\": \"110.00\",\n\"quantity\": \"1\",\n\"line_total\": \"110.00\"\n},\n{\n\"description\": \"Public Transport Fare (Daily Pass)\",\n\"unit_price\": \"45.00\",\n\"quantity\": \"1\",\n\"line_total\": \"45.00\"\n},\n{\n\"description\": \"HDMI Cable (2m)\",\n\"unit_price\": \"89.00\",\n\"quantity\": \"1\",\n\"line_total\": \"89.00\"\n},\n{\n\"description\": \"Haircut (Adult)\",\n\"unit_price\": \"200.00\",\n\"quantity\": \"1\",\n\"line_total\": \"200.00\"\n}\n],\n\"subtotal\": \"1,737.49\",\n\"vat\": \"260.62\",\n\"service_charge\": \"25.00\",\n\"total\": \"2,023.11\",\n\"payment_method\": \"EFT\",\n\"amount_paid\": \"2,023.11\",\n\"change_due\": \"0.00\"\n}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[categorizer_agent] said: ```json\n{\n  \"category\": \"Other\",\n  \"confidence\": 0.9,\n  \"comment\": \"This receipt from 'City Central Market' includes a diverse range of items spanning multiple categories such as groceries (milk, bread), entertainment (concert ticket, coffee/muffin), transport (tyre repair, public transport fare), services (dry cleaning, haircut), subscriptions (streaming), and general goods (novel, HDMI cable). Due to this significant diversity, 'Other' is the most appropriate overall category for this transaction.\"\n}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[reporter_agent] said: ```json\n{\n  \"summary_markdown\": \"# Expense Report: June 2025\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,023.11\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category:**\\n*   Other: R 2,023.11\\n\\n**Top Vendors by Spend:**\\n1.  City Central Market: R 2,023.11\\n\\n**Unusual Activity:**\\n*   Insufficient data to identify unusual activity or spikes. Only one receipt was processed for this period.\",\n  \"csv_data\": \"Date,Merchant,Category,Amount,Currency\\n2025-06-08,\\\"City Central Market\\\",Other,2023.11,R\"\n}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-10 15:53:53,366 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-10 15:53:59,710 - INFO - _client.py:1740 - HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/saferouteza/locations/us-central1/publishers/google/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-06-10 15:53:59,726 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "summary": "You processed 1 receipt totaling R2,023.11 from City Central Market. The entire spend falls under 'Other' due to the diverse range of items purchased. A significant portion of the expense was for a concert ticket (R650)."
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"summary\": \"You processed 1 receipt totaling R2,023.11 from City Central Market. The entire spend falls under 'Other' due to the diverse range of items purchased. A significant portion of the expense was for a concert ticket (R650).\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.12086189494413488}],"create_time":"2025-06-10T13:53:57.329178Z","response_id":"9ThIaNqLFM6_gLUPuZaZyAI","model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":68,"candidates_tokens_details":[{"modality":"TEXT","token_count":68}],"prompt_token_count":1771,"prompt_tokens_details":[{"modality":"DOCUMENT","token_count":516},{"modality":"TEXT","token_count":1255}],"total_token_count":1839,"traffic_type":"ON_DEMAND"},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-10 15:53:59,733 - INFO - fast_api.py:705 - Generated event in agent run streaming: {"content":{"parts":[{"text":"```json\n{\n  \"summary\": \"You processed 1 receipt totaling R2,023.11 from City Central Market. The entire spend falls under 'Other' due to the diverse range of items purchased. A significant portion of the expense was for a concert ticket (R650).\"\n}\n```"}],"role":"model"},"usageMetadata":{"candidatesTokenCount":68,"candidatesTokensDetails":[{"modality":"TEXT","tokenCount":68}],"promptTokenCount":1771,"promptTokensDetails":[{"modality":"DOCUMENT","tokenCount":516},{"modality":"TEXT","tokenCount":1255}],"totalTokenCount":1839,"trafficType":"ON_DEMAND"},"invocationId":"e-f52062c5-fcec-4744-b4d9-a552eb8683d0","author":"summarizer_agent","actions":{"stateDelta":{"summary":"```json\n{\n  \"summary\": \"You processed 1 receipt totaling R2,023.11 from City Central Market. The entire spend falls under 'Other' due to the diverse range of items purchased. A significant portion of the expense was for a concert ticket (R650).\"\n}\n```"},"artifactDelta":{},"requestedAuthConfigs":{}},"id":"Qv3Wh7Wk","timestamp":1749563633.352865}
+INFO:     127.0.0.1:50414 - "GET /apps/expense_tracker/users/user/sessions/28b1b99e-1414-4041-b3e7-7d2bebc46641 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50442 - "GET /debug/trace/session/28b1b99e-1414-4041-b3e7-7d2bebc46641 HTTP/1.1" 200 OK        

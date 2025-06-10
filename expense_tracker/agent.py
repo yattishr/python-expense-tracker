@@ -1,39 +1,25 @@
 """Expense_Tracker: End-to-end expense receipt ingestion and management, encompassing OCR parsing, category assignment, financial reporting, and concise summary generation."""
 
-from google.adk.agents import LlmAgent # This line is correct now
+from google.adk.agents import LlmAgent, SequentialAgent # This line is correct now
 from google.adk.tools.agent_tool import AgentTool # This line is correct now
-
-from . import prompt
 
 from .sub_agents.categorizer_agent import categorizer_agent
 from .sub_agents.reporter_agent import reporter_agent
 from .sub_agents.summarizer_agent import summarizer_agent
-
-from .tools.ocr_tool import ocr_tool
+from .sub_agents.ocr_agent.agent import ocr_agent
 
 MODEL = "gemini-2.0-flash"
 
-expense_coordinator = LlmAgent(
-    name="expense_coordinator",
-    model=MODEL,
-    description=(
-        "Handles end-to-end expense receipt processing: upload, parse, "
-        "categorize, and report. "
-        "Delegates category, report, and summary work to categorizer_agent, "
-        "reporter_agent, and summarizer_agent sub-agents respectively."
-    ),
-    instruction=prompt.EXPENSE_COORDINATOR_PROMPT,
-    output_key="expense_result",
-    tools=[
-        ocr_tool,
-        AgentTool(agent=categorizer_agent),
-        AgentTool(agent=reporter_agent),
+# 1 Create the sequential orchestrator
+expense_pipeline_agent = SequentialAgent(
+    name="ExpensePipelineAgent",
+    sub_agents=[
+        ocr_agent,            # Step 1: parse the image
+        categorizer_agent,    # Step 2: assign categories
+        reporter_agent,       # Step 3: generate detailed reports
+        summarizer_agent,     # Step 4: produce a human‐friendly summary
     ],
-    # sub_agents=[
-    #     categorizer_agent,
-    #     reporter_agent,
-    #     summarizer_agent,
-    # ],
+    description="Executes OCR → Categorize → Report → Summarize in one seamless pipeline."
 )
 
-root_agent = expense_coordinator
+root_agent = expense_pipeline_agent
