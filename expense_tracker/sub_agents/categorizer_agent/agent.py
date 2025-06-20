@@ -2,6 +2,7 @@
 
 from google.adk import Agent
 from . import prompt
+# from .tools.firestore_tool import firestore_tool
 
 MODEL = "gemini-2.5-pro-preview-05-06"
 
@@ -11,4 +12,7 @@ categorizer_agent = Agent(
     description="Tags each receipt line‐item with a spending category.",
     instruction=prompt.CATEGORIZER_PROMPT,
     output_key="items",
+    # tools=[
+    #     firestore_tool
+    # ],
 )
