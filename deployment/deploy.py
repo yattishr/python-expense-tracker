@@ -18,6 +18,13 @@ from dotenv import load_dotenv
 import vertexai
 from vertexai import agent_engines
 from vertexai.preview.reasoning_engines import AdkApp
+
+import sys
+# Add the project root directory to the Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from expense_tracker.agent import root_agent
 
 def main(argv: list[str]) -> None:
@@ -55,7 +62,8 @@ def main(argv: list[str]) -> None:
         requirements=[
             "google-adk (==0.5.0)",
             "google-cloud-aiplatform[adk,agent_engines] (==1.94.0)",
-            "google-cloud-secret-manager"
+            "google-cloud-secret-manager",
+            "deprecated",
         ]
     )
 
