@@ -40,7 +40,7 @@ if uploaded:
     payload = {
         "appName":   APP_NAME,
         "userId":    USER_ID,
-        "sessionId": sid,           # reuse the created session
+        "sessionId": sid,
         "streaming": False,
         "newMessage": {
             "role": "user",
@@ -48,7 +48,7 @@ if uploaded:
                 {"text": "Process this receipt"},
                 {
                     "inlineData": {
-                        "mimeType": uploaded.type,
+                        "mimeType": "application/pdf",
                         "data":     data
                     }
                 }

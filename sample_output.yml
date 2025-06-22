@@ -1,0 +1,301 @@
+INFO:     127.0.0.1:61455 - "POST /apps/expense_tracker/users/streamlit-user-1/sessions/d2423eb9-697d-4597-8595-ed24bd87fa0d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61477 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61477 - "GET /openapi.json HTTP/1.1" 200 OK
+2025-06-22 18:33:47,367 - INFO - envs.py:47 - Loaded .env file for expense_tracker at C:\Projects\expense-tracker\.env
+2025-06-22 18:33:47,382 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.0-flash, backend: ml_dev, stream: False
+2025-06-22 18:33:47,383 - INFO - google_llm.py:91 -
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+        You will get exactly one message part of type inlineData (with base64 ‘data’ and ‘mimeType’).
+        Call the tool `ocr_tool` passing that inline_data object.
+        Return *only* the JSON string your tool returns.
+
+
+You are an agent. Your internal name is "ocr_agent".
+
+ The description about you is "Performs OCR on a receipt image/PDF passed as inlineData; returns structured JSON of receipt fields."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"Process this receipt"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+ocr_tool: {'inline_data': {'type': <Type.OBJECT: 'OBJECT'>}} -> None
+-----------------------------------------------------------
+
+2025-06-22 18:33:47,384 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-22 18:33:53,734 - INFO - _client.py:1740 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-06-22 18:33:53,741 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{"inline_data": {"data": "ocr_text: Dummy Receipt - Date: 2025-06-06\nMerchant: Global Mart & Services\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\nPhone: (555) 123-4567\nTransaction #: GM789012345\nItems Purchased:\n•\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\nΟ\nUnit Price: R 450.00\nΟ\nQty: 1\nΟ\nLine Total: R 450.00\n•\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\nΟ\nUnit Price: R 280.00\nΟ\nQty: 1\nΟ\nLine Total: R 280.00\n•\nTRAVEL: Fuel Purchase (Petrol/Diesel)\nΟ\nΟ\nΟ\nUnit Price: R 700.00\nQty: 1\nLine Total: R 700.00\n•\nUTILITIES: Electricity Prepaid Voucher\nΟ\nΟ\nΟ\nUnit Price: R 300.00\nQty: 1\nLine Total: R 300.00\n•\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\nΟ\nΟ\nΟ\nUnit Price: R 195.50\nQty: 1\nLine Total: R 195.50\n•\nDINING: Restaurant Meal (Lunch for One)\nΟ\nUnit Price: R 185.00\n•\nΟ\nΟ\nQty: 1\nLine Total: R 185.00\nTRANSPORT: Ride-Share Service (Short Trip)\nΟ\nΟ\nΟ\nUnit Price: R 75.00\nQty: 1\nLine Total: R 75.00\n•\nHOME GOODS: Small Appliance / Kitchen Utensil\n•\nΟ\nΟ\nΟ\nUnit Price: R 120.00\nQty: 1\nLine Total: R 120.00\nAPPAREL: Socks & Small Accessory\nΟ\nΟ\nΟ\nUnit Price: R 90.00\nQty: 1\nLine Total: R 90.00\nSummary:\n•\nSubtotal: R 2,395.50\n•\nSales Tax (15% VAT): R 359.33\n•\nDiscount (Applied): -R 50.00\n•\nTOTAL DUE: R 2,704.83\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\nThank You For Your Business!\n•\nPlease visit us again.\n•\nwww.globalmartservices.com\n", "mimeType": "image/jpeg"}}       
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\"inline_data\": {\"data\": \"ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n\", \"mimeType\": \"image/jpeg\"}}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.005810416110844733}],"model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":749,"candidates_tokens_details":[{"modality":"TEXT","token_count":749}],"prompt_token_count":667,"prompt_tokens_details":[{"modality":"TEXT","token_count":151},{"modality":"DOCUMENT","token_count":516}],"total_token_count":1416},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-22 18:33:53,762 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.5-pro-preview-05-06, backend: ml_dev, stream: False
+2025-06-22 18:33:53,762 - INFO - google_llm.py:91 - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI expense categorization agent.
+
+Objective: Given a receipt JSON with an `items` array, assign each line‐item to one of these categories:
+- Meals & Entertainment
+- Travel & Transport
+- Accommodation
+- Groceries
+- Office Supplies
+- Utilities & Telecom
+- Health & Wellness
+- Other
+
+Instructions:
+- For each item in `"items"`, analyze its `description` and `line_total`.
+- Output *only* valid JSON with the same structure, but each item enriched with:
+    {
+      "description": …,
+      "unit_price": …,
+      "quantity": …,
+      "line_total": …,
+      "category": <chosen category>,
+      "confidence": <0.0–1.0>
+    }
+- Wrap it in an object:
+  ```json
+  {
+    "items": [ <enriched items> ]
+  }
+
+- Do not output any other keys or free text.
+
+
+You are an agent. Your internal name is "categorizer_agent".
+
+ The description about you is "Tags each receipt line‐item with a spending category."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"Process this receipt"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\"inline_data\": {\"data\": \"ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n\", \"mimeType\": \"image/jpeg\"}}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-22 18:33:53,769 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-22 18:34:19,431 - INFO - _client.py:1740 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-preview-05-06:generateContent "HTTP/1.1 200 OK"
+2025-06-22 18:34:19,435 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "items": [
+    {
+      "description": "Groceries & Household Supplies (Incl. Fresh Produce)",
+      "unit_price": 450.00,
+      "quantity": 1,
+      "line_total": 450.00,
+      "category": "Groceries",
+      "confidence": 1.0
+    },
+    {
+      "description": "Movie Tickets & Snacks (2 Adults)",
+      "unit_price": 280.00,
+      "quantity": 1,
+      "line_total": 280.00,
+      "category": "Meals & Entertainment",
+      "confidence": 1.0
+    },
+    {
+      "description": "Fuel Purchase (Petrol/Diesel)",
+      "unit_price": 700.00,
+      "quantity": 1,
+      "line_total": 700.00,
+      "category": "Travel & Transport",
+      "confidence": 1.0
+    },
+    {
+      "description": "Electricity Prepaid Voucher",
+      "unit_price": 300.00,
+      "quantity": 1,
+      "line_total": 300.00,
+      "category": "Utilities & Telecom",
+      "confidence": 1.0
+    },
+    {
+      "description": "Pharmacy Items (Medication, Toiletries)",
+      "unit_price": 195.50,
+      "quantity": 1,
+      "line_total": 195.50,
+      "category": "Health & Wellness",
+      "confidence": 1.0
+    },
+    {
+      "description": "Restaurant Meal (Lunch for One)",
+      "unit_price": 185.00,
+      "quantity": 1,
+      "line_total": 185.00,
+      "category": "Meals & Entertainment",
+      "confidence": 1.0
+    },
+    {
+      "description": "Ride-Share Service (Short Trip)",
+      "unit_price": 75.00,
+      "quantity": 1,
+      "line_total": 75.00,
+      "category": "Travel & Transport",
+      "confidence": 1.0
+    },
+    {
+      "description": "Small Appliance / Kitchen Utensil",
+      "unit_price": 120.00,
+      "quantity": 1,
+      "line_total": 120.00,
+      "category": "Other",
+      "confidence": 0.9
+    },
+    {
+      "description": "Socks & Small Accessory",
+      "unit_price": 90.00,
+      "quantity": 1,
+      "line_total": 90.00,
+      "category": "Other",
+      "confidence": 0.9
+    }
+  ]
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"items\": [\n    {\n      \"description\": \"Groceries & Household Supplies (Incl. Fresh Produce)\",\n      \"unit_price\": 450.00,\n      \"quantity\": 1,\n      \"line_total\": 450.00,\n      \"category\": \"Groceries\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Movie Tickets & Snacks (2 Adults)\",\n      \"unit_price\": 280.00,\n      \"quantity\": 1,\n      \"line_total\": 280.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Fuel Purchase (Petrol/Diesel)\",\n      \"unit_price\": 700.00,\n      \"quantity\": 1,\n      \"line_total\": 700.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Electricity Prepaid Voucher\",\n      \"unit_price\": 300.00,\n      \"quantity\": 1,\n      \"line_total\": 300.00,\n      \"category\": \"Utilities & Telecom\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Pharmacy Items (Medication, Toiletries)\",\n      \"unit_price\": 195.50,\n      \"quantity\": 1,\n      \"line_total\": 195.50,\n      \"category\": \"Health & Wellness\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Restaurant Meal (Lunch for One)\",\n      \"unit_price\": 185.00,\n      \"quantity\": 1,\n      \"line_total\": 185.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Ride-Share Service (Short Trip)\",\n      \"unit_price\": 75.00,\n      \"quantity\": 1,\n      \"line_total\": 75.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Small Appliance / Kitchen Utensil\",\n      \"unit_price\": 120.00,\n      \"quantity\": 1,\n      \"line_total\": 120.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    },\n    {\n      \"description\": \"Socks & Small Accessory\",\n      \"unit_price\": 90.00,\n      \"quantity\": 1,\n      \"line_total\": 90.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    }\n  ]\n}\n```"}],"role":"model"},"finish_reason":"STOP","index":0}],"model_version":"models/gemini-2.5-pro-preview-05-06","usage_metadata":{"candidates_token_count":697,"prompt_token_count":1529,"prompt_tokens_details":[{"modality":"TEXT","token_count":1013},{"modality":"DOCUMENT","token_count":516}],"thoughts_token_count":1812,"total_token_count":4038},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-22 18:34:19,450 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.5-pro-preview-05-06, backend: ml_dev, stream: False
+2025-06-22 18:34:19,451 - INFO - google_llm.py:91 - 
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI reporting assistant for expense data.
+
+Objective: Generate concise, human-readable summaries and CSV data from categorized receipts within a defined time period (e.g., last week, month, or custom range).
+
+Instructions:
+- Summarize key metrics:
+    - Total spend
+    - Spend by category
+    - Top 3 vendors by spend
+    - Number of receipts processed
+- Identify any categories or vendors with unusual activity (spikes, high spend).
+- If provided, use custom date ranges; otherwise, report for the current month.
+- Output a structured summary in Markdown for easy display, and also return a machine-readable CSV string of the underlying data.
+- Example output JSON:
+  {
+    "summary_markdown": "<human-readable summary here>",
+    "csv_data": "<CSV string here>"
+  }
+- Do not fabricate or infer missing data—clearly indicate if data is incomplete.
+
+
+You are an agent. Your internal name is "reporter_agent".
+
+ The description about you is "Sub agent for generating reports."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"Process this receipt"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\"inline_data\": {\"data\": \"ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n\", \"mimeType\": \"image/jpeg\"}}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[categorizer_agent] said: ```json\n{\n  \"items\": [\n    {\n      \"description\": \"Groceries & Household Supplies (Incl. Fresh Produce)\",\n      \"unit_price\": 450.00,\n      \"quantity\": 1,\n      \"line_total\": 450.00,\n      \"category\": \"Groceries\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Movie Tickets & Snacks (2 Adults)\",\n      \"unit_price\": 280.00,\n      \"quantity\": 1,\n      \"line_total\": 280.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Fuel Purchase (Petrol/Diesel)\",\n      \"unit_price\": 700.00,\n      \"quantity\": 1,\n      \"line_total\": 700.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Electricity Prepaid Voucher\",\n      \"unit_price\": 300.00,\n      \"quantity\": 1,\n      \"line_total\": 300.00,\n      \"category\": \"Utilities & Telecom\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Pharmacy Items (Medication, Toiletries)\",\n      \"unit_price\": 195.50,\n      \"quantity\": 1,\n      \"line_total\": 195.50,\n      \"category\": \"Health & Wellness\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Restaurant Meal (Lunch for One)\",\n      \"unit_price\": 185.00,\n      \"quantity\": 1,\n      \"line_total\": 185.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Ride-Share Service (Short Trip)\",\n      \"unit_price\": 75.00,\n      \"quantity\": 1,\n      \"line_total\": 75.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Small Appliance / Kitchen Utensil\",\n      \"unit_price\": 120.00,\n      \"quantity\": 1,\n      \"line_total\": 120.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    },\n    {\n      \"description\": \"Socks & Small Accessory\",\n      \"unit_price\": 90.00,\n      \"quantity\": 1,\n      \"line_total\": 90.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    }\n  ]\n}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-22 18:34:19,454 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-22 18:35:19,040 - INFO - _client.py:1740 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-preview-05-06:generateContent "HTTP/1.1 200 OK"
+2025-06-22 18:35:19,043 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "summary_markdown": "# Expense Report for Receipt GM789012345\n\n**Date:** June 6, 2025\n**Merchant:** Global Mart & Services\n**Transaction ID:** GM789012345\n\n**Key Metrics:**\n*   **Total Spend:** R 2,704.83\n*   **Number of Receipts Processed:** 1\n\n**Spend by Category (based on item subtotals):**\n*   Travel & Transport: R 775.00\n*   Meals & Entertainment: R 465.00\n*   Groceries: R 450.00\n*   Utilities & Telecom: R 300.00\n*   Other: R 210.00\n*   Health & Wellness: R 195.50\n*(Note: Category totals sum to R 2,395.50. The total spend includes Sales Tax (15% VAT) of R 359.33 and a Discount of R 50.00.)*\n\n**Top Vendors by Spend:**\n1.  Global Mart & Services: R 2,704.83\n\n**Activity Highlights:**\n*   This receipt from Global Mart & Services covers a variety of expenses.\n*   The highest spending category for this transaction is **Travel & Transport** at R 775.00, primarily due to a Fuel Purchase (R 700.00).\n*   **Meals & Entertainment** is the second highest spending category at R 465.00.\n*   Without historical data, specific \"unusual\" activity is hard to define, but these are the most significant expense areas for this single receipt.",
+  "csv_data": "ReceiptDate,Merchant,TransactionID,Category,ItemDescription,UnitPrice,Quantity,LineTotal,Currency\n2025-06-06,Global Mart & Services,GM789012345,Groceries,\"Groceries & Household Supplies (Incl. Fresh Produce)\",450.00,1,450.00,R\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\"Movie Tickets & Snacks (2 Adults)\",280.00,1,280.00,R\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\"Fuel Purchase (Petrol/Diesel)\",700.00,1,700.00,R\n2025-06-06,Global Mart & Services,GM789012345,Utilities & Telecom,\"Electricity Prepaid Voucher\",300.00,1,300.00,R\n2025-06-06,Global Mart & Services,GM789012345,Health & Wellness,\"Pharmacy Items (Medication, Toiletries)\",195.50,1,195.50,R\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\"Restaurant Meal (Lunch for One)\",185.00,1,185.00,R\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\"Ride-Share Service (Short Trip)\",75.00,1,75.00,R\n2025-06-06,Global Mart & Services,GM789012345,Other,\"Small Appliance / Kitchen Utensil\",120.00,1,120.00,R\n2025-06-06,Global Mart & Services,GM789012345,Other,\"Socks & Small Accessory\",90.00,1,90.00,R"
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"summary_markdown\": \"# Expense Report for Receipt GM789012345\\n\\n**Date:** June 6, 2025\\n**Merchant:** Global Mart & Services\\n**Transaction ID:** GM789012345\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,704.83\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category (based on item subtotals):**\\n*   Travel & Transport: R 775.00\\n*   Meals & Entertainment: R 465.00\\n*   Groceries: R 450.00\\n*   Utilities & Telecom: R 300.00\\n*   Other: R 210.00\\n*   Health & Wellness: R 195.50\\n*(Note: Category totals sum to R 2,395.50. The total spend includes Sales Tax (15% VAT) of R 359.33 and a Discount of R 50.00.)*\\n\\n**Top Vendors by Spend:**\\n1.  Global Mart & Services: R 2,704.83\\n\\n**Activity Highlights:**\\n*   This receipt from Global Mart & Services covers a variety of expenses.\\n*   The highest spending category for this transaction is **Travel & Transport** at R 775.00, primarily due to a Fuel Purchase (R 700.00).\\n*   **Meals & Entertainment** is the second highest spending category at R 465.00.\\n*   Without historical data, specific \\\"unusual\\\" activity is hard to define, but these are the most significant expense areas for this single receipt.\",\n  \"csv_data\": \"ReceiptDate,Merchant,TransactionID,Category,ItemDescription,UnitPrice,Quantity,LineTotal,Currency\\n2025-06-06,Global Mart & Services,GM789012345,Groceries,\\\"Groceries & Household Supplies (Incl. Fresh Produce)\\\",450.00,1,450.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\\"Movie Tickets & Snacks (2 Adults)\\\",280.00,1,280.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\\"Fuel Purchase (Petrol/Diesel)\\\",700.00,1,700.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Utilities & Telecom,\\\"Electricity Prepaid Voucher\\\",300.00,1,300.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Health & Wellness,\\\"Pharmacy Items (Medication, Toiletries)\\\",195.50,1,195.50,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\\"Restaurant Meal (Lunch for One)\\\",185.00,1,185.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\\"Ride-Share Service (Short Trip)\\\",75.00,1,75.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\\"Small Appliance / Kitchen Utensil\\\",120.00,1,120.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\\"Socks & Small Accessory\\\",90.00,1,90.00,R\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","index":0}],"model_version":"models/gemini-2.5-pro-preview-05-06","usage_metadata":{"candidates_token_count":970,"prompt_token_count":2221,"prompt_tokens_details":[{"modality":"TEXT","token_count":1705},{"modality":"DOCUMENT","token_count":516}],"thoughts_token_count":5268,"total_token_count":8459},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-22 18:35:19,063 - INFO - google_llm.py:85 - Sending out request, model: gemini-2.0-flash, backend: ml_dev, stream: False
+2025-06-22 18:35:19,065 - INFO - google_llm.py:91 -
+LLM Request:
+-----------------------------------------------------------
+System Instruction:
+
+Role: You are an AI summarization agent for expense tracking.
+
+Objective: Given a list of receipts (with merchant, items, totals, categories, etc.), produce a concise human-readable summary that covers:
+- Total spend across all receipts
+- Spend breakdown by category (top 3 categories)
+- Number of receipts processed
+- Any notable observations (e.g., unusually high single purchase)
+
+Output: Valid JSON with a single key `summary` whose value is the textual summary.
+Example:
+{
+  "summary": "Over the past week you processed 9 receipts totaling R2,704.83. Your top categories were Utilities (R1,200), Food (R450), and Entertainment (R280). No single expense exceeded your threshold of R1,000."
+}
+
+
+You are an agent. Your internal name is "summarizer_agent".
+
+ The description about you is "Summarizes expense/receipt data into a brief human-readable summary."
+-----------------------------------------------------------
+Contents:
+{"parts":[{"text":"Process this receipt"},{"inline_data":{"mime_type":"application/pdf"}}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[ocr_agent] said: ```json\n{\"inline_data\": {\"data\": \"ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n\", \"mimeType\": \"image/jpeg\"}}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[categorizer_agent] said: ```json\n{\n  \"items\": [\n    {\n      \"description\": \"Groceries & Household Supplies (Incl. Fresh Produce)\",\n      \"unit_price\": 450.00,\n      \"quantity\": 1,\n      \"line_total\": 450.00,\n      \"category\": \"Groceries\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Movie Tickets & Snacks (2 Adults)\",\n      \"unit_price\": 280.00,\n      \"quantity\": 1,\n      \"line_total\": 280.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Fuel Purchase (Petrol/Diesel)\",\n      \"unit_price\": 700.00,\n      \"quantity\": 1,\n      \"line_total\": 700.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Electricity Prepaid Voucher\",\n      \"unit_price\": 300.00,\n      \"quantity\": 1,\n      \"line_total\": 300.00,\n      \"category\": \"Utilities & Telecom\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Pharmacy Items (Medication, Toiletries)\",\n      \"unit_price\": 195.50,\n      \"quantity\": 1,\n      \"line_total\": 195.50,\n      \"category\": \"Health & Wellness\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Restaurant Meal (Lunch for One)\",\n      \"unit_price\": 185.00,\n      \"quantity\": 1,\n      \"line_total\": 185.00,\n      \"category\": \"Meals & Entertainment\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Ride-Share Service (Short Trip)\",\n      \"unit_price\": 75.00,\n      \"quantity\": 1,\n      \"line_total\": 75.00,\n      \"category\": \"Travel & Transport\",\n      \"confidence\": 1.0\n    },\n    {\n      \"description\": \"Small Appliance / Kitchen Utensil\",\n      \"unit_price\": 120.00,\n      \"quantity\": 1,\n      \"line_total\": 120.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    },\n    {\n      \"description\": \"Socks & Small Accessory\",\n      \"unit_price\": 90.00,\n      \"quantity\": 1,\n      \"line_total\": 90.00,\n      \"category\": \"Other\",\n      \"confidence\": 0.9\n    }\n  ]\n}\n```"}],"role":"user"}
+{"parts":[{"text":"For context:"},{"text":"[reporter_agent] said: ```json\n{\n  \"summary_markdown\": \"# Expense Report for Receipt GM789012345\\n\\n**Date:** June 6, 2025\\n**Merchant:** Global Mart & Services\\n**Transaction ID:** GM789012345\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,704.83\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category (based on item subtotals):**\\n*   Travel & Transport: R 775.00\\n*   Meals & Entertainment: R 465.00\\n*   Groceries: R 450.00\\n*   Utilities & Telecom: R 300.00\\n*   Other: R 210.00\\n*   Health & Wellness: R 195.50\\n*(Note: Category totals sum to R 2,395.50. The total spend includes Sales Tax (15% VAT) of R 359.33 and a Discount of R 50.00.)*\\n\\n**Top Vendors by Spend:**\\n1.  Global Mart & Services: R 2,704.83\\n\\n**Activity Highlights:**\\n*   This receipt from Global Mart & Services covers a variety of expenses.\\n*   The highest spending category for this transaction is **Travel & Transport** at R 775.00, primarily due to a Fuel Purchase (R 700.00).\\n*   **Meals & Entertainment** is the second highest spending category at R 465.00.\\n*   Without historical data, specific \\\"unusual\\\" activity is hard to define, but these are the most significant expense areas for this single receipt.\",\n  \"csv_data\": \"ReceiptDate,Merchant,TransactionID,Category,ItemDescription,UnitPrice,Quantity,LineTotal,Currency\\n2025-06-06,Global Mart & Services,GM789012345,Groceries,\\\"Groceries & Household Supplies (Incl. Fresh Produce)\\\",450.00,1,450.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\\"Movie Tickets & Snacks (2 Adults)\\\",280.00,1,280.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\\"Fuel Purchase (Petrol/Diesel)\\\",700.00,1,700.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Utilities & Telecom,\\\"Electricity Prepaid Voucher\\\",300.00,1,300.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Health & Wellness,\\\"Pharmacy Items (Medication, Toiletries)\\\",195.50,1,195.50,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\\"Restaurant Meal (Lunch for One)\\\",185.00,1,185.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\\"Ride-Share Service (Short Trip)\\\",75.00,1,75.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\\"Small Appliance / Kitchen Utensil\\\",120.00,1,120.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\\"Socks & Small Accessory\\\",90.00,1,90.00,R\"\n}\n```"}],"role":"user"}
+-----------------------------------------------------------
+Functions:
+
+-----------------------------------------------------------
+
+2025-06-22 18:35:19,089 - INFO - models.py:7447 - AFC is enabled with max remote calls: 10.
+2025-06-22 18:35:22,064 - INFO - _client.py:1740 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent "HTTP/1.1 200 OK"
+2025-06-22 18:35:22,068 - INFO - google_llm.py:151 - 
+LLM Response:
+-----------------------------------------------------------
+Text:
+```json
+{
+  "summary": "You processed 1 receipt totaling R2,704.83. Your top categories were Travel & Transport (R775.00), Meals & Entertainment (R465.00), and Groceries (R450.00). The Travel & Transport category includes a notable fuel purchase of R700.00."
+}
+```
+-----------------------------------------------------------
+Function calls:
+
+-----------------------------------------------------------
+Raw response:
+{"candidates":[{"content":{"parts":[{"text":"```json\n{\n  \"summary\": \"You processed 1 receipt totaling R2,704.83. Your top categories were Travel & Transport (R775.00), Meals & Entertainment (R465.00), and Groceries (R450.00). The Travel & Transport category includes a notable fuel purchase of R700.00.\"\n}\n```"}],"role":"model"},"finish_reason":"STOP","avg_logprobs":-0.06480843297551188}],"model_version":"gemini-2.0-flash","usage_metadata":{"candidates_token_count":89,"candidates_tokens_details":[{"modality":"TEXT","token_count":89}],"prompt_token_count":3183,"prompt_tokens_details":[{"modality":"TEXT","token_count":2667},{"modality":"DOCUMENT","token_count":516}],"total_token_count":3272},"automatic_function_calling_history":[]}
+-----------------------------------------------------------
+
+2025-06-22 18:35:22,070 - INFO - fast_api.py:678 - Generated 4 events in agent run: [Event(content=Content(parts=[Part(video_metadata=None, thought=None, inline_data=None, file_data=None, thought_signature=None, code_execution_result=None, executable_code=None, function_call=None, function_response=None, text='```json\n{"inline_data": {"data": "ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n", "mimeType": "image/jpeg"}}\n```')], role='model'), grounding_metadata=None, partial=None, turn_complete=None, error_code=None, error_message=None, interrupted=None, custom_metadata=None, usage_metadata=GenerateContentResponseUsageMetadata(cache_tokens_details=None, cached_content_token_count=None, candidates_token_count=749, candidates_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=749)], prompt_token_count=667, prompt_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=151), ModalityTokenCount(modality=<MediaModality.DOCUMENT: 'DOCUMENT'>, token_count=516)], thoughts_token_count=None, tool_use_prompt_token_count=None, tool_use_prompt_tokens_details=None, total_token_count=1416, traffic_type=None), invocation_id='e-72736e03-f493-4fd0-9705-00a5175a6700', author='ocr_agent', actions=EventActions(skip_summarization=None, state_delta={'receipt_json': '```json\n{"inline_data": {"data": "ocr_text: Dummy Receipt - Date: 2025-06-06\\nMerchant: Global Mart & Services\\nAddress: 123 Main Street, Anytown, Anyprovince, 12345\\nPhone: (555) 123-4567\\nTransaction #: GM789012345\\nItems Purchased:\\n•\\nFOOD: Groceries & Household Supplies (Incl. Fresh Produce)\\nΟ\\nUnit Price: R 450.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 450.00\\n•\\nENTERTAINMENT: Movie Tickets & Snacks (2 Adults)\\nΟ\\nUnit Price: R 280.00\\nΟ\\nQty: 1\\nΟ\\nLine Total: R 280.00\\n•\\nTRAVEL: Fuel Purchase (Petrol/Diesel)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 700.00\\nQty: 1\\nLine Total: R 700.00\\n•\\nUTILITIES: Electricity Prepaid Voucher\\nΟ\\nΟ\\nΟ\\nUnit Price: R 300.00\\nQty: 1\\nLine Total: R 300.00\\n•\\nPERSONAL CARE: Pharmacy Items (Medication, Toiletries)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 195.50\\nQty: 1\\nLine Total: R 195.50\\n•\\nDINING: Restaurant Meal (Lunch for One)\\nΟ\\nUnit Price: R 185.00\\n•\\nΟ\\nΟ\\nQty: 1\\nLine Total: R 185.00\\nTRANSPORT: Ride-Share Service (Short Trip)\\nΟ\\nΟ\\nΟ\\nUnit Price: R 75.00\\nQty: 1\\nLine Total: R 75.00\\n•\\nHOME GOODS: Small Appliance / Kitchen Utensil\\n•\\nΟ\\nΟ\\nΟ\\nUnit Price: R 120.00\\nQty: 1\\nLine Total: R 120.00\\nAPPAREL: Socks & Small Accessory\\nΟ\\nΟ\\nΟ\\nUnit Price: R 90.00\\nQty: 1\\nLine Total: R 90.00\\nSummary:\\n•\\nSubtotal: R 2,395.50\\n•\\nSales Tax (15% VAT): R 359.33\\n•\\nDiscount (Applied): -R 50.00\\n•\\nTOTAL DUE: R 2,704.83\\nPayment Method: CARD (XXXX-XXXX-XXXX-1234) Amount Paid: R 2,704.83 Change Due: R 0.00\\nThank You For Your Business!\\n•\\nPlease visit us again.\\n•\\nwww.globalmartservices.com\\n", "mimeType": "image/jpeg"}}\n```'}, artifact_delta={}, transfer_to_agent=None, escalate=None, requested_auth_configs={}), long_running_tool_ids=None, branch=None, id='FQcq6f4e', timestamp=1750610027.37019), Event(content=Content(parts=[Part(video_metadata=None, thought=None, inline_data=None, file_data=None, thought_signature=None, code_execution_result=None, executable_code=None, function_call=None, function_response=None, text='```json\n{\n  "items": [\n    {\n      "description": "Groceries & Household Supplies (Incl. Fresh Produce)",\n      "unit_price": 450.00,\n      "quantity": 1,\n      "line_total": 450.00,\n      "category": "Groceries",\n      "confidence": 1.0\n    },\n    {\n      "description": "Movie Tickets & Snacks (2 Adults)",\n      "unit_price": 280.00,\n      "quantity": 1,\n      "line_total": 280.00,\n      "category": "Meals & Entertainment",\n      "confidence": 1.0\n    },\n    {\n      "description": "Fuel Purchase (Petrol/Diesel)",\n      "unit_price": 700.00,\n      "quantity": 1,\n      "line_total": 700.00,\n      "category": "Travel & Transport",\n      "confidence": 1.0\n    },\n    {\n      "description": "Electricity Prepaid Voucher",\n      "unit_price": 300.00,\n      "quantity": 1,\n      "line_total": 300.00,\n      "category": "Utilities & Telecom",\n      "confidence": 1.0\n    },\n    {\n      "description": "Pharmacy Items (Medication, Toiletries)",\n      "unit_price": 195.50,\n      "quantity": 1,\n      "line_total": 195.50,\n      "category": "Health & Wellness",\n      "confidence": 1.0\n    },\n    {\n      "description": "Restaurant Meal (Lunch for One)",\n      "unit_price": 185.00,\n      "quantity": 1,\n      "line_total": 185.00,\n      "category": "Meals & Entertainment",\n      "confidence": 1.0\n    },\n    {\n      "description": "Ride-Share Service (Short Trip)",\n      "unit_price": 75.00,\n      "quantity": 1,\n      "line_total": 75.00,\n      "category": "Travel & Transport",\n      "confidence": 1.0\n    },\n    {\n      "description": "Small Appliance / Kitchen Utensil",\n      "unit_price": 120.00,\n      "quantity": 1,\n      "line_total": 120.00,\n      "category": "Other",\n      "confidence": 0.9\n    },\n    {\n      "description": "Socks & Small Accessory",\n      "unit_price": 90.00,\n      "quantity": 1,\n      "line_total": 90.00,\n      "category": "Other",\n      "confidence": 0.9\n    }\n  ]\n}\n```')], role='model'), grounding_metadata=None, partial=None, turn_complete=None, error_code=None, error_message=None, interrupted=None, custom_metadata=None, usage_metadata=GenerateContentResponseUsageMetadata(cache_tokens_details=None, cached_content_token_count=None, candidates_token_count=697, candidates_tokens_details=None, prompt_token_count=1529, prompt_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=1013), ModalityTokenCount(modality=<MediaModality.DOCUMENT: 'DOCUMENT'>, token_count=516)], thoughts_token_count=1812, tool_use_prompt_token_count=None, tool_use_prompt_tokens_details=None, total_token_count=4038, traffic_type=None), invocation_id='e-72736e03-f493-4fd0-9705-00a5175a6700', author='categorizer_agent', actions=EventActions(skip_summarization=None, state_delta={'items': '```json\n{\n  "items": [\n    {\n      "description": "Groceries & Household Supplies (Incl. Fresh Produce)",\n      "unit_price": 450.00,\n      "quantity": 1,\n      "line_total": 450.00,\n      "category": "Groceries",\n      "confidence": 1.0\n    },\n    {\n      "description": "Movie Tickets & Snacks (2 Adults)",\n      "unit_price": 280.00,\n      "quantity": 1,\n      "line_total": 280.00,\n      "category": "Meals & Entertainment",\n      "confidence": 1.0\n    },\n    {\n      "description": "Fuel Purchase (Petrol/Diesel)",\n      "unit_price": 700.00,\n      "quantity": 1,\n      "line_total": 700.00,\n      "category": "Travel & Transport",\n      "confidence": 1.0\n    },\n    {\n      "description": "Electricity Prepaid Voucher",\n      "unit_price": 300.00,\n      "quantity": 1,\n      "line_total": 300.00,\n      "category": "Utilities & Telecom",\n      "confidence": 1.0\n    },\n    {\n      "description": "Pharmacy Items (Medication, Toiletries)",\n      "unit_price": 195.50,\n      "quantity": 1,\n      "line_total": 195.50,\n      "category": "Health & Wellness",\n      "confidence": 1.0\n    },\n    {\n      "description": "Restaurant Meal (Lunch for One)",\n      "unit_price": 185.00,\n      "quantity": 1,\n      "line_total": 185.00,\n      "category": "Meals & Entertainment",\n      "confidence": 1.0\n    },\n    {\n      "description": "Ride-Share Service (Short Trip)",\n      "unit_price": 75.00,\n      "quantity": 1,\n      "line_total": 75.00,\n      "category": "Travel & Transport",\n      "confidence": 1.0\n    },\n    {\n      "description": "Small Appliance / Kitchen Utensil",\n      "unit_price": 120.00,\n      "quantity": 1,\n      "line_total": 120.00,\n      "category": "Other",\n      "confidence": 0.9\n    },\n    {\n      "description": "Socks & Small Accessory",\n      "unit_price": 90.00,\n      "quantity": 1,\n      "line_total": 90.00,\n      "category": "Other",\n      "confidence": 0.9\n    }\n  ]\n}\n```'}, artifact_delta={}, transfer_to_agent=None, escalate=None, requested_auth_configs={}), long_running_tool_ids=None, branch=None, id='JAot1AR0', timestamp=1750610033.747629), Event(content=Content(parts=[Part(video_metadata=None, thought=None, inline_data=None, file_data=None, thought_signature=None, code_execution_result=None, executable_code=None, function_call=None, function_response=None, text='```json\n{\n  "summary_markdown": "# Expense Report for Receipt GM789012345\\n\\n**Date:** June 6, 2025\\n**Merchant:** Global Mart & Services\\n**Transaction ID:** GM789012345\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,704.83\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category (based on item subtotals):**\\n*   Travel & Transport: R 775.00\\n*   Meals & Entertainment: R 465.00\\n*   Groceries: R 450.00\\n*   Utilities & Telecom: R 300.00\\n*   Other: R 210.00\\n*   Health & Wellness: R 195.50\\n*(Note: Category totals sum to R 2,395.50. The total spend includes Sales Tax (15% VAT) of R 359.33 and a Discount of R 50.00.)*\\n\\n**Top Vendors by Spend:**\\n1.  Global Mart & Services: R 2,704.83\\n\\n**Activity Highlights:**\\n*   This receipt from Global Mart & Services covers a variety of expenses.\\n*   The highest spending category for this transaction is **Travel & Transport** at R 775.00, primarily due to a Fuel Purchase (R 700.00).\\n*   **Meals & Entertainment** is the second highest spending category at R 465.00.\\n*   Without historical data, specific \\"unusual\\" activity is hard to define, but these are the most significant expense areas for this single receipt.",\n  "csv_data": "ReceiptDate,Merchant,TransactionID,Category,ItemDescription,UnitPrice,Quantity,LineTotal,Currency\\n2025-06-06,Global Mart & Services,GM789012345,Groceries,\\"Groceries & Household Supplies (Incl. Fresh Produce)\\",450.00,1,450.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\"Movie Tickets & Snacks (2 Adults)\\",280.00,1,280.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\"Fuel Purchase (Petrol/Diesel)\\",700.00,1,700.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Utilities & Telecom,\\"Electricity Prepaid Voucher\\",300.00,1,300.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Health & Wellness,\\"Pharmacy Items (Medication, Toiletries)\\",195.50,1,195.50,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\"Restaurant Meal (Lunch for One)\\",185.00,1,185.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\"Ride-Share Service (Short Trip)\\",75.00,1,75.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\"Small Appliance / Kitchen Utensil\\",120.00,1,120.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\"Socks & Small Accessory\\",90.00,1,90.00,R"\n}\n```')], role='model'), grounding_metadata=None, partial=None, turn_complete=None, error_code=None, error_message=None, interrupted=None, custom_metadata=None, usage_metadata=GenerateContentResponseUsageMetadata(cache_tokens_details=None, cached_content_token_count=None, candidates_token_count=970, candidates_tokens_details=None, prompt_token_count=2221, prompt_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=1705), ModalityTokenCount(modality=<MediaModality.DOCUMENT: 'DOCUMENT'>, token_count=516)], thoughts_token_count=5268, tool_use_prompt_token_count=None, tool_use_prompt_tokens_details=None, total_token_count=8459, traffic_type=None), invocation_id='e-72736e03-f493-4fd0-9705-00a5175a6700', author='reporter_agent', actions=EventActions(skip_summarization=None, state_delta={'report': '```json\n{\n  "summary_markdown": "# Expense Report for Receipt GM789012345\\n\\n**Date:** June 6, 2025\\n**Merchant:** Global Mart & Services\\n**Transaction ID:** GM789012345\\n\\n**Key Metrics:**\\n*   **Total Spend:** R 2,704.83\\n*   **Number of Receipts Processed:** 1\\n\\n**Spend by Category (based on item subtotals):**\\n*   Travel & Transport: R 775.00\\n*   Meals & Entertainment: R 465.00\\n*   Groceries: R 450.00\\n*   Utilities & Telecom: R 300.00\\n*   Other: R 210.00\\n*   Health & Wellness: R 195.50\\n*(Note: Category totals sum to R 2,395.50. The total spend includes Sales Tax (15% VAT) of R 359.33 and a Discount of R 50.00.)*\\n\\n**Top Vendors by Spend:**\\n1.  Global Mart & Services: R 2,704.83\\n\\n**Activity Highlights:**\\n*   This receipt from Global Mart & Services covers a variety of expenses.\\n*   The highest spending category for this transaction is **Travel & Transport** at R 775.00, primarily due to a Fuel Purchase (R 700.00).\\n*   **Meals & Entertainment** is the second highest spending category at R 465.00.\\n*   Without historical data, specific \\"unusual\\" activity is hard to define, but these are the most significant expense areas for this single receipt.",\n  "csv_data": "ReceiptDate,Merchant,TransactionID,Category,ItemDescription,UnitPrice,Quantity,LineTotal,Currency\\n2025-06-06,Global Mart & Services,GM789012345,Groceries,\\"Groceries & Household Supplies (Incl. Fresh Produce)\\",450.00,1,450.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\"Movie Tickets & Snacks (2 Adults)\\",280.00,1,280.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\"Fuel Purchase (Petrol/Diesel)\\",700.00,1,700.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Utilities & Telecom,\\"Electricity Prepaid Voucher\\",300.00,1,300.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Health & Wellness,\\"Pharmacy Items (Medication, Toiletries)\\",195.50,1,195.50,R\\n2025-06-06,Global Mart & Services,GM789012345,Meals & Entertainment,\\"Restaurant Meal (Lunch for One)\\",185.00,1,185.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Travel & Transport,\\"Ride-Share Service (Short Trip)\\",75.00,1,75.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\"Small Appliance / Kitchen Utensil\\",120.00,1,120.00,R\\n2025-06-06,Global Mart & Services,GM789012345,Other,\\"Socks & Small Accessory\\",90.00,1,90.00,R"\n}\n```'}, artifact_delta={}, transfer_to_agent=None, escalate=None, requested_auth_configs={}), long_running_tool_ids=None, branch=None, id='f8jK6RMO', timestamp=1750610059.441495), Event(content=Content(parts=[Part(video_metadata=None, thought=None, inline_data=None, file_data=None, thought_signature=None, code_execution_result=None, executable_code=None, function_call=None, function_response=None, text='```json\n{\n  "summary": "You processed 1 receipt totaling R2,704.83. Your top categories were Travel & Transport (R775.00), Meals & Entertainment (R465.00), and Groceries (R450.00). The Travel & Transport category includes a notable fuel purchase of R700.00."\n}\n```')], role='model'), grounding_metadata=None, partial=None, turn_complete=None, error_code=None, error_message=None, interrupted=None, custom_metadata=None, usage_metadata=GenerateContentResponseUsageMetadata(cache_tokens_details=None, cached_content_token_count=None, candidates_token_count=89, candidates_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=89)], prompt_token_count=3183, prompt_tokens_details=[ModalityTokenCount(modality=<MediaModality.TEXT: 'TEXT'>, token_count=2667), ModalityTokenCount(modality=<MediaModality.DOCUMENT: 'DOCUMENT'>, token_count=516)], thoughts_token_count=None, tool_use_prompt_token_count=None, tool_use_prompt_tokens_details=None, total_token_count=3272, traffic_type=None), invocation_id='e-72736e03-f493-4fd0-9705-00a5175a6700', author='summarizer_agent', actions=EventActions(skip_summarization=None, state_delta={'summary': '```json\n{\n  "summary": "You processed 1 receipt totaling R2,704.83. Your top categories were Travel & Transport (R775.00), Meals & Entertainment (R465.00), and Groceries (R450.00). The Travel & Transport category includes a notable fuel purchase of R700.00."\n}\n```'}, artifact_delta={}, transfer_to_agent=None, escalate=None, requested_auth_configs={}), long_running_tool_ids=None, branch=None, id='zaM7gjLZ', timestamp=1750610119.051583)]
+INFO:     127.0.0.1:61587 - "POST /run HTTP/1.1" 200 OK
