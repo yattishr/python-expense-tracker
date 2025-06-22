@@ -15,6 +15,6 @@ ocr_agent = Agent(
     """,
     output_key="receipt_json",
     tools=[
-        ocr_tool
+        ocr_tool,
     ],
 )

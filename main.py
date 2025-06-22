@@ -11,6 +11,12 @@ from typing_extensions import Annotated
 from fastapi.exceptions import RequestValidationError
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
+# Import the custom artifact saving function
+from google.adk.agents.callback_context import CallbackContext
+import google.genai.types as types
+
+from expense_tracker.sub_agents.ocr_agent.tools.artifact_tool import save_pdf_as_artifact
+
 # Get the directory where main.py is located
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Example session DB URL (e.g., SQLite)
@@ -36,12 +42,6 @@ async def handle_form_validation(request: Request, exc: RequestValidationError):
         "Invalid multipart/form-data request",
         status_code=HTTP_422_UNPROCESSABLE_ENTITY
     )
-
-# You can add more FastAPI routes or configurations below if needed
-# Example:
-# @app.get("/hello")
-# async def read_root():
-#     return {"Hello": "World"}
 
 if __name__ == "__main__":
     # Use the PORT environment variable provided by Cloud Run, defaulting to 8080

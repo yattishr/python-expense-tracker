@@ -1,7 +1,6 @@
 """Expense_Tracker: End-to-end expense receipt ingestion and management, encompassing OCR parsing, category assignment, financial reporting, and concise summary generation."""
 
-from google.adk.agents import LlmAgent, SequentialAgent # This line is correct now
-from google.adk.tools.agent_tool import AgentTool # This line is correct now
+from google.adk.agents import SequentialAgent # This line is correct now
 
 from .sub_agents.categorizer_agent import categorizer_agent
 from .sub_agents.reporter_agent import reporter_agent
