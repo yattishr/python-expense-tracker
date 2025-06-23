@@ -1,0 +1,122 @@
+# app.py
+import os
+import uuid
+import base64
+import json
+import requests
+
+import streamlit as st
+import pandas as pd
+
+# ————— CONFIG —————
+ADK_BASE = os.getenv("ADK_RUN_URL", "http://localhost:8000")
+APP_NAME = "expense_tracker"
+USER_ID  = "streamlit-user-1"
+
+# ————— HELPERS —————
+def ensure_session():
+    if "session_id" not in st.session_state:
+        sid = str(uuid.uuid4())
+        create_url = f"{ADK_BASE}/apps/{APP_NAME}/users/{USER_ID}/sessions/{sid}"
+        resp = requests.post(create_url)
+        if not resp.ok:
+            st.error(f"Failed to create session: {resp.text}")
+            st.stop()
+        st.session_state.session_id = sid
+
+def call_adk(payload):
+    run_url = f"{ADK_BASE}/run"
+    return requests.post(run_url, json=payload).json()
+
+# ————— STREAMLIT UI —————
+st.set_page_config(page_title="Expense Pilot", layout="wide")
+st.title("🚀 Expense Pilot")
+
+# 1) Make sure we have a session
+ensure_session()
+sid = st.session_state.session_id
+
+# 2) File uploader
+uploaded = st.file_uploader("Choose a receipt file", type=["pdf","jpg","png"])
+if uploaded:
+    st.info("Processing…")
+
+    # Prepare payload
+    data = base64.b64encode(uploaded.read()).decode()
+    payload = {
+        "appName":   APP_NAME,
+        "userId":    USER_ID,
+        "sessionId": sid,
+        "streaming": False,
+        "newMessage": {
+            "role": "user",
+            "parts": [
+                {"text": "Process this receipt"},
+                {
+                    "inlineData": {
+                        "mimeType": "application/pdf",
+                        "data":     data
+                    }
+                }
+            ]
+        }
+    }
+
+    # Call ADK
+    result = call_adk(payload)
+
+    # — PATCH for non-streaming /run (it returns a list of events) —
+    if isinstance(result, list):
+        last_evt = result[-1]
+        actions  = last_evt.get("actions", {}) or {}
+        # support both snake_case (unlikely) and camelCase (actual)
+        output   = actions.get("stateDelta", {}) or actions.get("state_delta", {})
+    else:
+        output   = result.get("output", {})
+
+    if not output:
+        st.error("No output received from the backend.")
+        st.stop()
+
+    # 🔍 Raw output
+    st.subheader("🔍 Raw Output")
+    st.json(output)
+
+    # 🧾 Parsed Receipt
+    # the Agent stores its JSON under either "expense_result" or "receipt_json"
+    raw_json = output.get("expense_result") or output.get("receipt_json")
+    if raw_json:
+        # strip any ```json fences
+        s = raw_json.strip()
+        if s.startswith("```"):
+            s = s.strip("```").replace("json\n", "")
+        try:
+            receipt = json.loads(s)
+        except Exception:
+            receipt = None
+
+        if receipt:
+            st.subheader("🧾 Parsed Receipt")
+            m = receipt.get("merchant_name") or receipt.get("merchant")
+            d = receipt.get("transaction_date") or receipt.get("date")
+            t = receipt.get("total") or receipt.get("amount_paid")
+            c = receipt.get("currency", "")
+            st.write(f"**Merchant:** {m}")
+            st.write(f"**Date:** {d}")
+            st.write(f"**Total:** {t} {c}")
+
+            st.subheader("📊 Spend by Category")
+            df = pd.DataFrame(receipt.get("items", []))
+            if not df.empty and "category" in df:
+                chart = df.groupby("category")["line_total"].sum().reset_index()
+                st.bar_chart(chart.set_index("category"))
+
+    # 📝 Summary
+    summary = output.get("summary") or output.get("summary_markdown")
+    if summary:
+        st.subheader("📝 Summary")
+        # if it's raw markdown
+        if summary.startswith("#") or "\n" in summary:
+            st.markdown(summary)
+        else:
+            st.write(summary)
