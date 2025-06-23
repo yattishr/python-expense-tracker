@@ -1,0 +1,45 @@
+gcloud auth login
+
+gcloud auth configure-docker
+
+# set gcloud project ID
+$env:GOOGLE_CLOUD_PROJECT = "saferouteza"
+
+## build with Powershell
+docker build -t gcr.io/saferouteza/expense-pilot-ui:latest .
+
+docker push    gcr.io/saferouteza/expense-pilot-ui:latest
+
+gcloud run deploy expense-pilot-ui `
+>>   --image gcr.io/saferouteza/expense-pilot-ui:latest `
+>>   --region us-central1 `
+>>   --allow-unauthenticated
+
+
+#2 (Optional) If you ever need to look it up later, you can run:
+gcloud run services describe expense-pilot-ui `
+  --region us-central1 `
+  --format 'value(status.url)'
+
+
+gcloud run deploy expense-pilot-ui `
+--image gcr.io/saferouteza/expense-pilot-ui:latest `
+--region us-central1 `
+--allow-unauthenticated
+
+Deploying container to Cloud Run service [expense-pilot-ui] in project [saferouteza] region [us-central1]
+OK Deploying... Done.
+  OK Creating Revision...
+  OK Routing traffic...
+  OK Setting IAM Policy...
+Done.
+Service [expense-pilot-ui] revision [expense-pilot-ui-00002-hls] has been deployed and is serving 100 percent of traffic.
+Service URL: https://expense-pilot-ui-696361474032.us-central1.run.app
+
+
+## Deploy with ADK Cloud URL
+gcloud run deploy expense-pilot-ui `
+  --image gcr.io/saferouteza/expense-pilot-ui:latest `
+  --region us-central1 `
+  --allow-unauthenticated `
+  --set-env-vars=ADK_RUN_URL=https://expense-pipeline-agent-696361474032.us-central1.run.app

@@ -32,16 +32,36 @@ def call_adk(payload):
     r.raise_for_status()
     return r.json()
 
+# def load_fenced_json(s: str):
+#     """Strip ```json fences and parse JSON."""
+#     if not isinstance(s, str) or not s.strip():
+#         return None
+#     body = re.sub(r"^```json\n|```$", "", s).strip()
+#     return json.loads(body)
+
 def load_fenced_json(s: str):
-    """Strip ```json fences and parse JSON."""
+    """
+    Strips optional ```json fences from the string and attempts to parse JSON.
+    If parsing fails, shows an error and prints a preview of the raw string in Streamlit.
+    Returns parsed JSON object or None if invalid.
+    """
     if not isinstance(s, str) or not s.strip():
         return None
-    body = re.sub(r"^```json\n|```$", "", s).strip()
-    return json.loads(body)
+
+    # More flexible regex to strip fences, allowing whitespace
+    body = re.sub(r"^```json\s*|\s*```$", "", s).strip()
+
+    try:
+        return json.loads(body)
+    except json.JSONDecodeError as e:
+        st.error(f"JSON decode error: {e}")
+        preview = (body[:500] + '...') if len(body) > 500 else body
+        st.text(f"Offending JSON (truncated):\n{preview}")
+        return None
 
 # ————— STREAMLIT UI —————
-st.set_page_config(page_title="Expense Pilot", layout="wide")
-st.title("🚀 Expense Pilot")
+st.set_page_config(page_title="Track My Expense", layout="wide")
+st.title("🚀 Track My Expense")
 
 # 1) ensure session
 ensure_session()
