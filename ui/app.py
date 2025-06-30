@@ -63,6 +63,25 @@ def load_fenced_json(s: str):
 st.set_page_config(page_title="Track My Expense", layout="wide")
 st.title("🚀 Track My Expense")
 
+# Big, bold app purpose
+st.markdown(
+    "**Track My Expense helps you take control of your spending** "
+    "by automatically categorizing your outgoings and visualizing where your money goes."
+)
+
+# One-liner on how it works
+st.markdown(
+    "_Just upload a receipt or enter an expense—our AI categorizes it in seconds and updates your dashboard in real time._"
+)
+
+# Or you could use an info box for more emphasis:
+st.info(
+    "📊 **How it works:**\n"
+    "- Upload receipts or manual entries  \n"
+    "- AI reads & categorizes each expense  \n"
+    "- Instant charts & summaries to guide your budgeting"
+)
+
 # 1) ensure session
 ensure_session()
 sid = st.session_state.session_id
