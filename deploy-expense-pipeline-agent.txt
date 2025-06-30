@@ -1,0 +1,25 @@
+## Option 1 1_ Source-based deploy (rebuild via your local Dockerfile)
+gcloud run deploy expense-pipeline-agent `
+  --source . `
+  --region us-central1 `
+  --project saferouteza `
+  --allow-unauthenticated `
+  --set-env-vars=GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT,GOOGLE_CLOUD_LOCATION=$GOOGLE_CLOUD_LOCATION,GOOGLE_GENAI_USE_VERTEXAI=$GOOGLE_GENAI_USE_VERTEXAI
+
+
+
+## Option 2_ Container-image deploy (build & push, then deploy)
+docker build -t gcr.io/saferouteza/expense-pipeline-agent:latest .
+docker push    gcr.io/saferouteza/expense-pipeline-agent:latest
+
+
+gcloud run deploy expense-pipeline-agent `
+  --image gcr.io/saferouteza/expense-pipeline-agent:latest `
+  --region us-central1 `
+  --project saferouteza `
+  --allow-unauthenticated `
+  --set-env-vars=GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT,GOOGLE_CLOUD_LOCATION=$GOOGLE_CLOUD_LOCATION,GOOGLE_GENAI_USE_VERTEXAI=$GOOGLE_GENAI_USE_VERTEXAI
+
+
+
+  Service URL: https://expense-pipeline-agent-696361474032.us-central1.run.app

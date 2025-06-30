@@ -6,6 +6,7 @@ from .sub_agents.categorizer_agent import categorizer_agent
 from .sub_agents.reporter_agent import reporter_agent
 from .sub_agents.summarizer_agent import summarizer_agent
 from .sub_agents.ocr_agent.agent import ocr_agent
+from .sub_agents.data_agent.agent import data_agent
 
 MODEL = "gemini-2.0-flash"
 
