@@ -1,1 +1,1 @@
-from .agent import summarizer_agent
+from .agent import data_agent

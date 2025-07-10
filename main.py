@@ -15,8 +15,6 @@ from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 from google.adk.agents.callback_context import CallbackContext
 import google.genai.types as types
 
-from expense_tracker.sub_agents.ocr_agent.tools.artifact_tool import save_pdf_as_artifact
-
 # Get the directory where main.py is located
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Example session DB URL (e.g., SQLite)

@@ -32,13 +32,6 @@ def call_adk(payload):
     r.raise_for_status()
     return r.json()
 
-# def load_fenced_json(s: str):
-#     """Strip ```json fences and parse JSON."""
-#     if not isinstance(s, str) or not s.strip():
-#         return None
-#     body = re.sub(r"^```json\n|```$", "", s).strip()
-#     return json.loads(body)
-
 def load_fenced_json(s: str):
     """
     Strips optional ```json fences from the string and attempts to parse JSON.
@@ -85,6 +78,12 @@ if uploaded:
                 {"text": "Process this receipt"},
                 {"inlineData": {"mimeType": uploaded.type, "data": data_b64}}
             ]
+        },
+        # ADDING toolContext HERE
+        "toolContext": {
+            "userState": {
+                "user_id": USER_ID
+            }
         }
     }
 

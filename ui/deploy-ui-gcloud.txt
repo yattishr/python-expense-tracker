@@ -10,22 +10,11 @@ docker build -t gcr.io/saferouteza/expense-pilot-ui:latest .
 
 docker push    gcr.io/saferouteza/expense-pilot-ui:latest
 
-gcloud run deploy expense-pilot-ui `
->>   --image gcr.io/saferouteza/expense-pilot-ui:latest `
->>   --region us-central1 `
->>   --allow-unauthenticated
-
-
 #2 (Optional) If you ever need to look it up later, you can run:
 gcloud run services describe expense-pilot-ui `
   --region us-central1 `
   --format 'value(status.url)'
 
-
-gcloud run deploy expense-pilot-ui `
---image gcr.io/saferouteza/expense-pilot-ui:latest `
---region us-central1 `
---allow-unauthenticated
 
 Deploying container to Cloud Run service [expense-pilot-ui] in project [saferouteza] region [us-central1]
 OK Deploying... Done.
