@@ -5,7 +5,7 @@ import base64
 import re
 import json
 import io
-
+import logging
 import requests
 import streamlit as st
 import pandas as pd
@@ -14,6 +14,9 @@ import pandas as pd
 ADK_BASE = os.getenv("ADK_RUN_URL", "http://localhost:8000")
 APP_NAME = "expense_tracker"
 USER_ID  = "streamlit-user-1"
+
+# Enable logging
+logger = logging.getLogger(__name__)
 
 # ————— HELPERS —————
 def ensure_session():
@@ -69,7 +72,7 @@ if uploaded:
     data_b64 = base64.b64encode(uploaded.read()).decode()
     payload = {
         "appName":   APP_NAME,
-        "userId":    USER_ID,
+        "user_id":   USER_ID,
         "sessionId": sid,
         "streaming": False,
         "newMessage": {
@@ -78,12 +81,6 @@ if uploaded:
                 {"text": "Process this receipt"},
                 {"inlineData": {"mimeType": uploaded.type, "data": data_b64}}
             ]
-        },
-        # ADDING toolContext HERE
-        "toolContext": {
-            "userState": {
-                "user_id": USER_ID
-            }
         }
     }
 

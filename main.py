@@ -1,5 +1,7 @@
 import os
 import json
+import logging
+import sys
 
 import uvicorn
 from google.adk.cli.fast_api import get_fast_api_app
@@ -14,6 +16,14 @@ from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 # Import the custom artifact saving function
 from google.adk.agents.callback_context import CallbackContext
 import google.genai.types as types
+
+# Configure the root logger
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout    
+)
 
 # Get the directory where main.py is located
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))

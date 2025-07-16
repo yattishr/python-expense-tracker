@@ -2,12 +2,13 @@
 
 from google.adk import Agent
 from .tools.ocr_tool import ocr_tool
-
-MODEL = "gemini-2.0-flash"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 ocr_agent = Agent(
     name="ocr_agent",
-    model=MODEL,
+    model=os.environ.get("GOOGLE_GENAI_MODEL"),
     description=(
         "Performs OCR on a receipt image/PDF passed as inlineData; "
         "returns structured JSON of receipt fields."

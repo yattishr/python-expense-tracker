@@ -3,14 +3,14 @@
 
 from google.adk import Agent
 from .tools.data_agent_tool import data_agent_tool # Import the function directly
-
-MODEL = "gemini-2.0-flash"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 data_agent = Agent(
     name="data_agent",
-    model=MODEL,
-    description="Aggregates expense history for a user for use by downstream Insights Agent",
-    ## instruction="Call the data_agent_tool to retrieve spend history for a user. The tool requires a user_id and can optionally take the number of months.",
+    model=os.environ.get("GOOGLE_GENAI_MODEL"),
+    description="Aggregates expense history for a user for use by downstream Insights Agent",    
     instruction="""When you are invoked, immediately call the function `data_agent_tool` with:
                     • user_id set to the conversation’s USER_ID (from the API call),
                     • months left at its default of 2.

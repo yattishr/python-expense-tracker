@@ -2,12 +2,12 @@
 
 from google.adk import Agent
 from . import prompt
-# from .tools.firestore_tool import firestore_tool
-
-MODEL = "gemini-2.5-pro-preview-05-06"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 categorizer_agent = Agent(
-    model=MODEL,
+    model=os.environ.get("GOOGLE_GENAI_MODEL"),
     name="categorizer_agent",
     description="Tags each receipt line‐item with a spending category.",
     instruction=prompt.CATEGORIZER_PROMPT,

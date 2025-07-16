@@ -2,11 +2,12 @@
 
 from google.adk import Agent
 from . import prompt
-
-MODEL = "gemini-2.5-pro-preview-05-06"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 reporter_agent = Agent(
-    model=MODEL,
+    model=os.environ.get("GOOGLE_GENAI_MODEL"),
     name="reporter_agent",
     description="Sub agent for generating reports.",
     instruction=prompt.REPORTER_PROMPT,   
