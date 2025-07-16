@@ -5,7 +5,6 @@ from typing import Dict, Any
 from .db_utils import get_expenses_for_user
 from collections import defaultdict
 from datetime import datetime
-from google.adk.agents.invocation_context import InvocationContext
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +19,9 @@ async def data_agent_tool(user_id: str, tool_context: ToolContext, months: int =
     Returns:
         A dictionary containing the aggregated spend history.
     """
-    # resolved_user_id = tool_context.state.get("user_id")
-    resolved_user_id = tool_context.user_state.get("user_id")
+    # Prefer the explicit user_id argument if provided
+    resolved_user_id = user_id or tool_context.user_state.get("user_id")
     logger.info("Logging resolved_user_id: %s", resolved_user_id)
-    
-    # implementing the below for TESTING purposes
-    # resolved_user_id = "streamlit-user-1"
 
     if not resolved_user_id:
         logger.error("Error: User ID not found in tool argument or ToolContext.")
