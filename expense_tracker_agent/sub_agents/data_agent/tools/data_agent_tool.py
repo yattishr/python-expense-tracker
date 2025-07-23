@@ -2,13 +2,13 @@
 import logging
 from google.adk.tools import ToolContext
 from typing import Dict, Any
-from .db_utils import get_expenses_for_user, insert_expense_for_user
+from .db_utils import get_expenses_for_user
 from collections import defaultdict
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-async def data_agent_tool(user_id: str, tool_context: ToolContext, months: int = 2) -> Dict[str, Any]:
+async def data_agent_tool(user_id: str, tool_context: ToolContext) -> Dict[str, Any]:
     """
     Returns spend per category for current and previous months for the user.
 
@@ -19,30 +19,20 @@ async def data_agent_tool(user_id: str, tool_context: ToolContext, months: int =
     Returns:
         A dictionary containing the aggregated spend history.
     """
-    # Prefer the explicit user_id argument if provided. Hard coding this temorarily for testing.
-    resolved_user_id = "streamlit-user-1"
+    months = 2
+    if not user_id:
+        # Attempt to resolve user_id from ToolContext if not provided
+        user_id = tool_context.get("user_id")
+
+    # Prefer the explicit user_id argument if provided
+    resolved_user_id = user_id
     logger.info("Logging resolved_user_id: %s", resolved_user_id)
 
     if not resolved_user_id:
         logger.error("Error: User ID not found in tool argument or ToolContext.")
         return {"error": "User ID is required but was not provided."}
 
-    # Fetch expenses for the user
-    logger.info("Fetching expenses for user: %s with months: %d", resolved_user_id, months)
     expenses = get_expenses_for_user(resolved_user_id, months)
-    
-    # If no expenses are found, insert a default expense record
-    if not expenses:
-        logger.warning("No expenses found for user: %s", resolved_user_id)
-        today = datetime.today().strftime("%Y-%m-%d")
-        insert_expense_for_user(
-            user_id=resolved_user_id,
-            date=today,
-            category="Groceries",
-            amount=125.97
-        )
-        expenses = get_expenses_for_user(resolved_user_id, months)
-
     per_month = defaultdict(lambda: defaultdict(float))
     for exp in expenses:
         dt = datetime.strptime(exp["date"], "%Y-%m-%d")

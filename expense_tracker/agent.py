@@ -18,7 +18,7 @@ expense_pipeline_agent = SequentialAgent(
         reporter_agent,       # Step 4: generate detailed reports
         summarizer_agent,     # Step 5: produce a human‐friendly summary
     ],
-    description="Executes OCR → Categorize → Report → Summarize in one seamless pipeline."
+    description="Executes OCR → Data Agent → Categorize → Report → Summarize in one seamless pipeline."
 )
 
 root_agent = expense_pipeline_agent

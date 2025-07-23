@@ -42,24 +42,3 @@ def get_expenses_for_user(user_id, months=2, db_path=DB_PATH):
     finally:
         if conn:
             conn.close()
-
-def insert_expense_for_user(user_id, date, category, amount, db_path=DB_PATH):
-    """Insert a new expense record for a user."""
-    conn = None
-    try:
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        query = """
-        INSERT INTO expenses (user_id, date, category, amount)
-        VALUES (?, ?, ?, ?)
-        """
-        cursor.execute(query, (user_id, date, category, amount))
-        conn.commit()
-        logger.info(f"Inserted expense for user_id: {user_id} on {date} ({category}: {amount})")
-        return True
-    except sqlite3.Error as e:
-        logger.error(f"Database insert error: {e}")
-        return False
-    finally:
-        if conn:
-            conn.close()            

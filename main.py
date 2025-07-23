@@ -27,6 +27,8 @@ logging.basicConfig(
 
 # Get the directory where main.py is located
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
+print(f"Agent directory: {AGENT_DIR}")
+
 # Example session DB URL (e.g., SQLite)
 SESSION_DB_URL = "sqlite:///./sessions.db"
 # Example allowed origins for CORS

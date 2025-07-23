@@ -72,7 +72,7 @@ if uploaded:
     data_b64 = base64.b64encode(uploaded.read()).decode()
     payload = {
         "appName":   APP_NAME,
-        "userId":    USER_ID,
+        "user_id":    USER_ID,
         "sessionId": sid,
         "streaming": False,
         "newMessage": {
