@@ -11,7 +11,7 @@ categorizer_agent = Agent(
     name="categorizer_agent",
     description="Tags each receipt line‐item with a spending category.",
     instruction=prompt.CATEGORIZER_PROMPT,
-    output_key="items",
+    output_key="categorizer_items",
     # tools=[
     #     firestore_tool
     # ],
